@@ -1,0 +1,226 @@
+package tn.esprit.spring.services;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Departement;
+import tn.esprit.spring.entities.Employe;
+import tn.esprit.spring.entities.Entreprise;
+import tn.esprit.spring.entities.Mission;
+import tn.esprit.spring.entities.Timesheet;
+import tn.esprit.spring.repository.ContratRepository;
+import tn.esprit.spring.repository.DepartementRepository;
+import tn.esprit.spring.repository.EmployeRepository;
+import tn.esprit.spring.repository.TimesheetRepository;
+
+@Service
+public class EmployeServiceImpl implements IEmployeService {
+	
+	private static final Logger l = LogManager.getLogger(EmployeServiceImpl.class);
+	
+	@Autowired
+	EmployeRepository employeRepository;
+	@Autowired
+	DepartementRepository deptRepoistory;
+	@Autowired
+	ContratRepository contratRepoistory;
+	@Autowired
+	TimesheetRepository timesheetRepository;
+
+	public int ajouterEmploye(Employe employe) {
+				try{
+				if(employeRepository.save(employe) != null)
+				{
+					l.info("Saved new employe = " + employe);
+				}
+				}catch (Exception e) {
+					l.error(e.getMessage());
+				}
+		return employe.getId();
+	}
+
+	public void mettreAjourEmailByEmployeId(String email, int employeId) {
+		try {
+			if(employeRepository.findById(employeId).isPresent()){
+				Employe employe = employeRepository.findById(employeId).get();
+				l.info("Old mail: "+ employe.getEmail());
+				employe.setEmail(email);
+				l.info("New mail: "+ employe.getEmail());
+				if(employeRepository.save(employe) != null)
+				{
+					l.info("New mail saved");
+				}
+			}
+			else
+			{
+				l.error("Employe doesn't exist");
+			}
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+	}
+
+	@Transactional	
+	public void affecterEmployeADepartement(int employeId, int depId) {
+		try {
+			
+			Departement depManagedEntity = deptRepoistory.findById(depId).get();
+			Employe employeManagedEntity = employeRepository.findById(employeId).get();
+			if(depManagedEntity.getEmployes() == null){
+				List<Employe> employes = new ArrayList<>();
+				employes.add(employeManagedEntity);
+				depManagedEntity.setEmployes(employes);
+				l.info("The first employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+				+ depManagedEntity.getName());
+			}else{
+				depManagedEntity.getEmployes().add(employeManagedEntity);
+				l.info("Employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+						+ depManagedEntity.getName());
+			}
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+		
+
+	
+	}
+	@Transactional
+	public void desaffecterEmployeDuDepartement(int employeId, int depId)
+	{
+		try {
+			Departement dep = deptRepoistory.findById(depId).get();
+			int employeNb = dep.getEmployes().size();
+			for(int index = 0; index < employeNb; index++){
+				if(dep.getEmployes().get(index).getId() == employeId){
+					l.info("Employe" + dep.getEmployes().get(index).getNom() + "kicked from the department " + dep.getName() );
+					dep.getEmployes().remove(index);
+					break;
+				}
+			}
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+		
+	}
+
+	public int ajouterContrat(Contrat contrat) {
+		int testValidator = 0;
+		try {
+			if(contratRepoistory.save(contrat) != null)
+			{
+				l.info("Saved new contract = " + contrat);
+				testValidator = 1;
+				
+			}
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+		
+		return testValidator;
+	}
+
+	public void affecterContratAEmploye(int contratId, int employeId) {
+		try {
+			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
+			Employe employeManagedEntity = employeRepository.findById(employeId).get();
+
+			contratManagedEntity.setEmploye(employeManagedEntity);
+			if(contratRepoistory.save(contratManagedEntity) != null){
+				l.info("Contract " + contratManagedEntity.getReference() + " affected to employe "+ employeManagedEntity.getNom());
+			}
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+	}
+
+	public String getEmployePrenomById(int employeId) {
+		String testValidator = "empty";
+		try {
+			Employe employeManagedEntity = employeRepository.findById(employeId).get();
+			testValidator = employeManagedEntity.getPrenom();
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+		return testValidator;
+	}
+	public void deleteEmployeById(int employeId)
+	{
+		try{
+			Employe employe = employeRepository.findById(employeId).get();
+			//Desaffecter l'employe de tous les departements
+			//c'est le bout master qui permet de mettre a jour
+			//la table d'association
+			for(Departement dep : employe.getDepartements()){
+				dep.getEmployes().remove(employe);
+				l.info("Employe "+ employe.getNom() + " from the department "+ dep.getName());
+			}
+			employeRepository.delete(employe);
+		}catch (Exception e) {
+			l.error(e.getMessage());
+		}
+		
+	}
+
+	public void deleteContratById(int contratId) {
+		try {
+			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
+			contratRepoistory.delete(contratManagedEntity);
+			l.info("Contract "+ contratManagedEntity.getReference() +" deleted");
+		} catch (Exception e) {
+			l.error(e.getMessage());
+		}
+	}
+
+	public int getNombreEmployeJPQL() {
+		return employeRepository.countemp();
+	}
+	
+	public List<String> getAllEmployeNamesJPQL() {
+		return employeRepository.employeNames();
+
+	}
+	
+	public List<Employe> getAllEmployeByEntreprise(Entreprise entreprise) {
+		return employeRepository.getAllEmployeByEntreprisec(entreprise);
+	}
+
+	public void mettreAjourEmailByEmployeIdJPQL(String email, int employeId) {
+		employeRepository.mettreAjourEmailByEmployeIdJPQL(email, employeId);
+
+	}
+	public void deleteAllContratJPQL() {
+         employeRepository.deleteAllContratJPQL();
+	}
+	
+	public float getSalaireByEmployeIdJPQL(int employeId) {
+		return employeRepository.getSalaireByEmployeIdJPQL(employeId);
+	}
+
+	public Double getSalaireMoyenByDepartementId(int departementId) {
+		return employeRepository.getSalaireMoyenByDepartementId(departementId);
+	}
+	
+	public List<Timesheet> getTimesheetsByMissionAndDate(Employe employe, Mission mission, Date dateDebut,
+			Date dateFin) {
+		return timesheetRepository.getTimesheetsByMissionAndDate(employe, mission, dateDebut, dateFin);
+	}
+
+	public List<Employe> getAllEmployes() {
+				return (List<Employe>) employeRepository.findAll();
+	}
+
+	@Override
+	public Employe getEmployeById(int id) {
+		return employeRepository.findById(id).get();
+	}
+
+}
