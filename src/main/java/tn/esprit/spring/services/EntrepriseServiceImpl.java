@@ -38,7 +38,18 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		return entreprise.getId();
 	}
 	public int ajouterDepartement(Departement dep) {
-		deptRepoistory.save(dep);
+		try {
+			logger.info("START ajouterEntreprise ");
+			logger.debug("debut d'ajout de l'entreprise: " + dep.getName());
+			deptRepoistory.save(dep);
+			logger.info("out of ajouterdep()");
+			logger.debug("l'dep: " + dep.getName() + " de l'id: " + dep.getId() + " ajoutée avec succé");
+
+		}catch(Exception e){
+			logger.error("Erreur: "+e);
+		}
+		logger.info("END ajouterdep ");
+	
 		return dep.getId();
 	}
 	
