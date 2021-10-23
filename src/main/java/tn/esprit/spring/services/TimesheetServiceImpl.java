@@ -42,6 +42,14 @@ public class TimesheetServiceImpl implements ITimesheetService {
 
 	}
 
+	public Mission getMissionById(int missionId) {
+		if (missionRepository.findById(missionId).isPresent()) {
+			return missionRepository.findById(missionId).get();
+
+		} else
+			return null;
+	}
+
 	public void affecterMissionADepartement(int missionId, int depId) {
 		Mission mission = missionRepository.findById(missionId).get();
 		Departement dep = deptRepoistory.findById(depId).get();
