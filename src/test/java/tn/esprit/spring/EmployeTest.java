@@ -59,4 +59,17 @@ public class EmployeTest {
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
 		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe)!= -1);
 	}
+
+    @Transactional
+	@Test
+	public void testdesaffecterEmployeDuDepartemen()
+	{
+		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		int idEmploye = employeService.ajouterEmploye(employe);
+		Departement departement = new Departement("Khalil's Departement");
+		int idDepartement = entrepriseService.ajouterDepartement(departement);
+		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
+		employeService.desaffecterEmployeDuDepartement(idEmploye, idDepartement);
+		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe) == -1);
+	}
 }
