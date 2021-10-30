@@ -87,4 +87,17 @@ public class EmployeTest {
 		Assert.assertNotNull(employeService.getContratByReference(referenceContrat));
 	}
 	
+	@Test
+	public void testAffecterContratAEmploye()
+	{
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+		Date date = new Date(System.currentTimeMillis());
+		Contrat contrat = new Contrat(date,"CDI",2000);
+		int referenceContrat = employeService.ajouterContrat(contrat);
+		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		int idEmploye = employeService.ajouterEmploye(employe);
+		employeService.affecterContratAEmploye(referenceContrat, idEmploye);
+		Assert.assertNotNull(employeService.getContratByReference(referenceContrat).getEmploye());
+	}
+	
 }
