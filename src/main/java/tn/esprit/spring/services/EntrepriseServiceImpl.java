@@ -142,8 +142,34 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	@Transactional
-	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());
+	public int deleteDepartementById(int depId) {
+		logger.info("START deleteDepartementById ");
+		try {
+			logger.trace("Début Test : verifier l'exstence du l'entrep");
+			if (deptRepoistory.findById(depId).isPresent()) {
+				logger.debug("Departement exitse:" + deptRepoistory.findById(depId).get().getId());
+
+				logger.trace("débbut suppression");
+				deptRepoistory.delete(deptRepoistory.findById(depId).get());
+				logger.trace("fin suppression");
+				logger.trace("FIN Test : verifier l'exstence du Departement");
+				return 1;
+			} else {
+
+				logger.trace("Departement n'exitse pas");
+				logger.trace("FIN Test : verifier l'exstence du Departement");
+				return -1;
+			}
+
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
+
+		}
+
+		logger.debug("Departement suprimée:" + deptRepoistory.findById(depId).get().getId());
+		logger.info("END deleteDepartementById ");
+		return 0;
+
 	}
 
 	public Entreprise getEntrepriseById(int entrepriseId) {

@@ -17,7 +17,7 @@ public interface IEntrepriseService {
 
 	public int deleteEntrepriseById(int entrepriseId);
 
-	public void deleteDepartementById(int depId);
+	public int deleteDepartementById(int depId);
 
 	public Entreprise getEntrepriseById(int entrepriseId);
 
