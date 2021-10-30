@@ -48,4 +48,13 @@ public class EntrepriseTest {
 
 	}
 
+	@Test
+	public void testdeleteEntrepriseById() {
+		int value = serviceEntreprise.deleteEntrepriseById(19);
+		Assert.assertEquals(value, 1);
+		int WrongValue = serviceEntreprise.deleteEntrepriseById(1812132);
+		Assert.assertEquals(WrongValue, -1);
+
+	}
+
 }
