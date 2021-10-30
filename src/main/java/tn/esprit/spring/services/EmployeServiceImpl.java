@@ -40,7 +40,7 @@ public class EmployeServiceImpl implements IEmployeService {
 				try{
 				if(employeRepository.save(employe) != null)
 				{
-					l.info("Saved new employe = " + employe);
+					l.debug("Saved new employe = " + employe);
 				}
 				}catch (Exception e) {
 					l.error(e.getMessage());
@@ -52,12 +52,12 @@ public class EmployeServiceImpl implements IEmployeService {
 		try {
 			if(employeRepository.findById(employeId).isPresent()){
 				Employe employe = employeRepository.findById(employeId).get();
-				l.info("Old mail: "+ employe.getEmail());
+				l.debug("Old mail: "+ employe.getEmail());
 				employe.setEmail(email);
-				l.info("New mail: "+ employe.getEmail());
+				l.debug("New mail: "+ employe.getEmail());
 				if(employeRepository.save(employe) != null)
 				{
-					l.info("New mail saved");
+					l.debug("New mail saved");
 				}
 			}
 			else
@@ -78,11 +78,11 @@ public class EmployeServiceImpl implements IEmployeService {
 				List<Employe> employes = new ArrayList<>();
 				employes.add(employeManagedEntity);
 				depManagedEntity.setEmployes(employes);
-				l.info("The first employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+				l.debug("The first employe "+ employeManagedEntity.getNom() +"has been affected to the department "
 				+ depManagedEntity.getName());
 			}else{
 				depManagedEntity.getEmployes().add(employeManagedEntity);
-				l.info("Employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+				l.debug("Employe "+ employeManagedEntity.getNom() +"has been affected to the department "
 						+ depManagedEntity.getName());
 			}
 		} catch (Exception e) {
@@ -100,7 +100,7 @@ public class EmployeServiceImpl implements IEmployeService {
 			int employeNb = dep.getEmployes().size();
 			for(int index = 0; index < employeNb; index++){
 				if(dep.getEmployes().get(index).getId() == employeId){
-					l.info("Employe" + dep.getEmployes().get(index).getNom() + "kicked from the department " + dep.getName() );
+					l.debug("Employe" + dep.getEmployes().get(index).getNom() + "kicked from the department " + dep.getName() );
 					dep.getEmployes().remove(index);
 					break;
 				}
@@ -118,7 +118,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		try{
 			if(contratRepoistory.save(contrat) != null)
 			{
-				l.info("Saved new contract = " + contrat);
+				l.debug("Saved new contract = " + contrat);
 			}
 			}catch (Exception e) {
 				l.error(e.getMessage());
@@ -133,7 +133,7 @@ public class EmployeServiceImpl implements IEmployeService {
 
 			contratManagedEntity.setEmploye(employeManagedEntity);
 			if(contratRepoistory.save(contratManagedEntity) != null){
-				l.info("Contract " + contratManagedEntity.getReference() + " affected to employe "+ employeManagedEntity.getNom());
+				l.debug("Contract " + contratManagedEntity.getReference() + " affected to employe "+ employeManagedEntity.getNom());
 			}
 		} catch (Exception e) {
 			l.error(e.getMessage());
@@ -159,7 +159,7 @@ public class EmployeServiceImpl implements IEmployeService {
 			//la table d'association
 			for(Departement dep : employe.getDepartements()){
 				dep.getEmployes().remove(employe);
-				l.info("Employe "+ employe.getNom() + " from the department "+ dep.getName());
+				l.debug("Employe "+ employe.getNom() + " from the department "+ dep.getName());
 			}
 			employeRepository.delete(employe);
 		}catch (Exception e) {
@@ -172,7 +172,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		try {
 			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 			contratRepoistory.delete(contratManagedEntity);
-			l.info("Contract "+ contratManagedEntity.getReference() +" deleted");
+			l.debug("Contract "+ contratManagedEntity.getReference() +" deleted");
 		} catch (Exception e) {
 			l.error(e.getMessage());
 		}
