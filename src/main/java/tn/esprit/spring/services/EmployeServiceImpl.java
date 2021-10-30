@@ -72,7 +72,6 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		try {
-			
 			Departement depManagedEntity = deptRepoistory.findById(depId).get();
 			Employe employeManagedEntity = employeRepository.findById(employeId).get();
 			if(depManagedEntity.getEmployes() == null){
@@ -112,22 +111,21 @@ public class EmployeServiceImpl implements IEmployeService {
 		
 	}
 
+	public Contrat getContratByReference(int reference) {
+		return contratRepoistory.findById(reference).get();
+	}
 	public int ajouterContrat(Contrat contrat) {
-		int testValidator = 0;
-		try {
+		try{
 			if(contratRepoistory.save(contrat) != null)
 			{
 				l.info("Saved new contract = " + contrat);
-				testValidator = 1;
-				
 			}
-		} catch (Exception e) {
-			l.error(e.getMessage());
-		}
-		
-		return testValidator;
+			}catch (Exception e) {
+				l.error(e.getMessage());
+			}
+	return contrat.getReference();
 	}
-
+		
 	public void affecterContratAEmploye(int contratId, int employeId) {
 		try {
 			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();

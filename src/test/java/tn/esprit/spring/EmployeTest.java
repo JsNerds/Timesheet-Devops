@@ -2,6 +2,9 @@ package tn.esprit.spring;
 
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Role;
@@ -50,7 +54,7 @@ public class EmployeTest {
 	
 	@Transactional
 	@Test
-	public void affecterEmployeADepartement()
+	public void testaffecterEmployeADepartement()
 	{
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
 		int idEmploye = employeService.ajouterEmploye(employe);
@@ -59,8 +63,8 @@ public class EmployeTest {
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
 		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe)!= -1);
 	}
-
-    @Transactional
+	
+	@Transactional
 	@Test
 	public void testdesaffecterEmployeDuDepartemen()
 	{
@@ -72,4 +76,15 @@ public class EmployeTest {
 		employeService.desaffecterEmployeDuDepartement(idEmploye, idDepartement);
 		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe) == -1);
 	}
+	
+	@Test
+	public void testAjouterContrat()
+	{
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+		Date date = new Date(System.currentTimeMillis());
+		Contrat contrat = new Contrat(date,"CDI",2000);
+		int referenceContrat = employeService.ajouterContrat(contrat);
+		Assert.assertNotNull(employeService.getContratByReference(referenceContrat));
+	}
+	
 }
