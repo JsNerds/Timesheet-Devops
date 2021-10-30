@@ -37,6 +37,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 		return entreprise.getId();
 	}
+	
+	
 	public int ajouterDepartement(Departement dep) {
 		try {
 			logger.info("START ajouterEntreprise ");
@@ -45,26 +47,36 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			logger.info("out of ajouterdep()");
 			logger.debug("l'dep: " + dep.getName() + " de l'id: " + dep.getId() + " ajoutée avec succé");
 
-		}catch(Exception e){
-			logger.error("Erreur: "+e);
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
 		}
 		logger.info("END ajouterdep ");
-	
+
 		return dep.getId();
 	}
 	
-	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
-		//Le bout Master de cette relation N:1 est departement  
-				//donc il faut rajouter l'entreprise a departement 
-				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
-				//Rappel : la classe qui contient mappedBy represente le bout Slave
-				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-				Departement depManagedEntity = deptRepoistory.findById(depId).get();
-				
-				depManagedEntity.setEntreprise(entrepriseManagedEntity);
-				deptRepoistory.save(depManagedEntity);
+	public int affecterDepartementAEntreprise(int depId, int entrepriseId) {
+		Departement dep = new Departement();
+		try {
+			logger.info("START affecterDepartementAEntreprise ");
+			Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+			logger.debug("Get Entreprise:" + entrepriseManagedEntity.getName());
+			Departement depManagedEntity = deptRepoistory.findById(depId).get();
+			logger.debug("Get Department:" + entrepriseManagedEntity.getName());
+			depManagedEntity.setEntreprise(entrepriseManagedEntity);
+			deptRepoistory.save(depManagedEntity);
+			dep = depManagedEntity;
+			logger.debug("Entrep: " + depManagedEntity.getEntreprise().getId() + "-"
+					+ depManagedEntity.getEntreprise().getName() + "affecté au department:" + depManagedEntity.getName()
+					+ "-" + depManagedEntity.getId());
+
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
+
+		}
+		logger.info("END affecterDepartementAEntreprise ");
 		
+		return dep.getEntreprise().getId();
 	}
 	
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
@@ -95,6 +107,15 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		if(entrepriseRepoistory.findById(entrepriseId).isPresent()) {
 			return entrepriseRepoistory.findById(entrepriseId).get();	
 
+		}
+		else 
+			return null;
+	}
+
+
+	public Departement getDepartementById(int departementId) {
+		if(deptRepoistory.findById(departementId).isPresent()) {
+			return deptRepoistory.findById(departementId).get();	
 		}
 		else 
 			return null;
