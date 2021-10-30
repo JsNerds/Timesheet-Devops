@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.EntrepriseRepository;
 import tn.esprit.spring.services.IEntrepriseService;
@@ -29,5 +30,11 @@ public class EntrepriseTest {
         Assert.assertNotNull(serviceEntreprise.getEntrepriseById(id));
     }
     
-
+    @Test
+    public void testAjouterDepartment(){
+        Departement dep= new Departement("Agriculture");
+        int id=serviceEntreprise.ajouterDepartement(dep);
+        Assert.assertNotNull(serviceEntreprise.getDepartementById(id));
+    }
+    
 }
