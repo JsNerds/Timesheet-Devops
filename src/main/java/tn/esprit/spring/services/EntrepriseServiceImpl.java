@@ -18,85 +18,172 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	public static final Logger logger = Logger.getLogger(EntrepriseServiceImpl.class);
 
 	@Autowired
-    EntrepriseRepository entrepriseRepoistory;
+	EntrepriseRepository entrepriseRepoistory;
 	@Autowired
 	DepartementRepository deptRepoistory;
-	
-	public int ajouterEntreprise(Entreprise entreprise) {
-		try {
-			logger.info("START ajouterEntreprise ");
-			logger.debug("debut d'ajout de l'entreprise: " + entreprise.getName());
-			entrepriseRepoistory.save(entreprise);
-			logger.info("out of ajouterEntreprise()");
-			logger.debug("l'entreprise: " + entreprise.getName() + " de l'id: " + entreprise.getId() + " ajoutée avec succé");
 
-		}catch(Exception e){
-			logger.error("Erreur: "+e);
+	public int ajouterEntreprise(Entreprise entreprise) {
+		logger.info("START ajouterEntreprise ");
+
+		try {
+			logger.debug(entreprise.getId());
+
+			logger.trace("debut d'ajout de l'entreprise: " + entreprise.getName());
+			entrepriseRepoistory.save(entreprise);
+			logger.trace("fin ajout");
+
+			logger.debug("l'entreprise: " + entreprise.getName() + " de l'id: " + entreprise.getId()
+					+ " ajoutée avec succé");
+
+		} catch (Exception e) {
+			logger.error("Erreur:" + e);
 		}
 		logger.info("END ajouterEntreprise ");
 
 		return entreprise.getId();
 	}
+
 	public int ajouterDepartement(Departement dep) {
+		logger.info("START ajouterEntreprise ");
+
 		try {
-			logger.info("START ajouterEntreprise ");
-			logger.debug("debut d'ajout de l'entreprise: " + dep.getName());
+			logger.debug(dep.getId());
+
+			logger.trace("debut d'ajout du departement: " + dep.getName());
 			deptRepoistory.save(dep);
-			logger.info("out of ajouterdep()");
+			logger.trace("fin Ajout");
+
 			logger.debug("l'dep: " + dep.getName() + " de l'id: " + dep.getId() + " ajoutée avec succé");
 
-		}catch(Exception e){
-			logger.error("Erreur: "+e);
+		} catch (Exception e) {
+			logger.error("Erreur:" + e);
 		}
 		logger.info("END ajouterdep ");
-	
+
 		return dep.getId();
 	}
-	
-	public void affecterDepartementAEntreprise(int depId, int entrepriseId) {
-		//Le bout Master de cette relation N:1 est departement  
-				//donc il faut rajouter l'entreprise a departement 
-				// ==> c'est l'objet departement(le master) qui va mettre a jour l'association
-				//Rappel : la classe qui contient mappedBy represente le bout Slave
-				//Rappel : Dans une relation oneToMany le mappedBy doit etre du cote one.
-				Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
-				Departement depManagedEntity = deptRepoistory.findById(depId).get();
-				
-				depManagedEntity.setEntreprise(entrepriseManagedEntity);
-				deptRepoistory.save(depManagedEntity);
-		
+
+	public int affecterDepartementAEntreprise(int depId, int entrepriseId) {
+		logger.info("START affecterDepartementAEntreprise ");
+		Departement dep = new Departement();
+		try {
+			logger.debug("init dep" + dep);
+
+			logger.trace("début: récuperer entrep by ID");
+			Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
+			logger.trace("fin: récuperer entrep by ID");
+
+			logger.trace("début: récuperer dep by ID");
+			Departement depManagedEntity = deptRepoistory.findById(depId).get();
+			logger.trace("début: récuperer dep by ID");
+
+			logger.trace("début: affectation d'entrep -> departement");
+			depManagedEntity.setEntreprise(entrepriseManagedEntity);
+			deptRepoistory.save(depManagedEntity);
+			logger.trace("fin: affectation d'entrep -> departement");
+
+			dep = depManagedEntity;
+
+			logger.debug("new Dep" + dep);
+
+			logger.debug("Entrep: " + depManagedEntity.getEntreprise().getId() + "-"
+					+ depManagedEntity.getEntreprise().getName() + "affecté au department:" + depManagedEntity.getName()
+					+ "-" + depManagedEntity.getId());
+
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
+
+		}
+
+		logger.info("END affecterDepartementAEntreprise ");
+		return dep.getEntreprise().getId();
 	}
-	
+
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).get();
 		List<String> depNames = new ArrayList<>();
-		for(Departement dep : entrepriseManagedEntity.getDepartements()){
+		for (Departement dep : entrepriseManagedEntity.getDepartements()) {
 			depNames.add(dep.getName());
 		}
-		
+
 		return depNames;
 	}
 
 	@Transactional
-	public void deleteEntrepriseById(int entrepriseId) {
-		if(entrepriseRepoistory.findById(entrepriseId).isPresent()) {
-			entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());	
+	public int deleteEntrepriseById(int entrepriseId) {
+		logger.info("START deleteEntrepriseById ");
+		try {
+			logger.trace("Début Test : verifier l'exstence du l'entrep");
+			if (entrepriseRepoistory.findById(entrepriseId).isPresent()) {
+				logger.debug("Entrep exitse:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
+
+				logger.trace("débbut suppression");
+				entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());
+				logger.trace("fin suppression");
+				logger.trace("FIN Test : verifier l'exstence du l'entrep");
+				return 1;
+			} else {
+
+				logger.trace("Entrep n'exitse pas");
+				logger.trace("FIN Test : verifier l'exstence du l'entrep");
+				return -1;
+			}
+
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
 
 		}
+
+		logger.debug("Entrep suprimée:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
+		logger.info("END deleteEntrepriseById ");
+
+		return 0;
+
 	}
 
 	@Transactional
-	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());	
-	}
+	public int deleteDepartementById(int depId) {
+		logger.info("START deleteDepartementById ");
+		try {
+			logger.trace("Début Test : verifier l'exstence du l'entrep");
+			if (deptRepoistory.findById(depId).isPresent()) {
+				logger.debug("Departement exitse:" + deptRepoistory.findById(depId).get().getId());
 
+				logger.trace("débbut suppression");
+				deptRepoistory.delete(deptRepoistory.findById(depId).get());
+				logger.trace("fin suppression");
+				logger.trace("FIN Test : verifier l'exstence du Departement");
+				return 1;
+			} else {
 
-	public Entreprise getEntrepriseById(int entrepriseId) {
-		if(entrepriseRepoistory.findById(entrepriseId).isPresent()) {
-			return entrepriseRepoistory.findById(entrepriseId).get();	
+				logger.trace("Departement n'exitse pas");
+				logger.trace("FIN Test : verifier l'exstence du Departement");
+				return -1;
+			}
+
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
 
 		}
-		else 
+
+		logger.debug("Departement suprimée:" + deptRepoistory.findById(depId).get().getId());
+		logger.info("END deleteDepartementById ");
+		return 0;
+
+	}
+
+	public Entreprise getEntrepriseById(int entrepriseId) {
+		if (entrepriseRepoistory.findById(entrepriseId).isPresent()) {
+			return entrepriseRepoistory.findById(entrepriseId).get();
+
+		} else
+			return null;
+	}
+
+	public Departement getDepartementById(int departementId) {
+		if (deptRepoistory.findById(departementId).isPresent()) {
+			return deptRepoistory.findById(departementId).get();
+		} else
 			return null;
 	}
 
