@@ -40,7 +40,7 @@ public class EmployeServiceImpl implements IEmployeService {
 				try{
 				if(employeRepository.save(employe) != null)
 				{
-					l.info("Saved new employe = " + employe);
+					l.debug("Saved new employe = " + employe);
 				}
 				}catch (Exception e) {
 					l.error(e.getMessage());
@@ -52,12 +52,12 @@ public class EmployeServiceImpl implements IEmployeService {
 		try {
 			if(employeRepository.findById(employeId).isPresent()){
 				Employe employe = employeRepository.findById(employeId).get();
-				l.info("Old mail: "+ employe.getEmail());
+				l.debug("Old mail: "+ employe.getEmail());
 				employe.setEmail(email);
-				l.info("New mail: "+ employe.getEmail());
+				l.debug("New mail: "+ employe.getEmail());
 				if(employeRepository.save(employe) != null)
 				{
-					l.info("New mail saved");
+					l.debug("New mail saved");
 				}
 			}
 			else
@@ -72,19 +72,21 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Transactional	
 	public void affecterEmployeADepartement(int employeId, int depId) {
 		try {
-			
+			if(deptRepoistory.findById(depId).isPresent() && employeRepository.findById(employeId).isPresent())
+			{	
 			Departement depManagedEntity = deptRepoistory.findById(depId).get();
 			Employe employeManagedEntity = employeRepository.findById(employeId).get();
 			if(depManagedEntity.getEmployes() == null){
 				List<Employe> employes = new ArrayList<>();
 				employes.add(employeManagedEntity);
 				depManagedEntity.setEmployes(employes);
-				l.info("The first employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+				l.debug("The first employe "+ employeManagedEntity.getNom() +"has been affected to the department "
 				+ depManagedEntity.getName());
 			}else{
 				depManagedEntity.getEmployes().add(employeManagedEntity);
-				l.info("Employe "+ employeManagedEntity.getNom() +"has been affected to the department "
+				l.debug("Employe "+ employeManagedEntity.getNom() +"has been affected to the department "
 						+ depManagedEntity.getName());
+			}
 			}
 		} catch (Exception e) {
 			l.error(e.getMessage());
@@ -97,45 +99,51 @@ public class EmployeServiceImpl implements IEmployeService {
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
 		try {
-			Departement dep = deptRepoistory.findById(depId).get();
-			int employeNb = dep.getEmployes().size();
-			for(int index = 0; index < employeNb; index++){
-				if(dep.getEmployes().get(index).getId() == employeId){
-					l.info("Employe" + dep.getEmployes().get(index).getNom() + "kicked from the department " + dep.getName() );
-					dep.getEmployes().remove(index);
-					break;
+			if(deptRepoistory.findById(depId).isPresent())
+			{
+				Departement dep = deptRepoistory.findById(depId).get();
+				int employeNb = dep.getEmployes().size();
+				for(int index = 0; index < employeNb; index++){
+					if(dep.getEmployes().get(index).getId() == employeId){
+						l.debug("Employe" + dep.getEmployes().get(index).getNom() + "kicked from the department " + dep.getName() );
+						dep.getEmployes().remove(index);
+						break;
+					}
 				}
 			}
-		} catch (Exception e) {
-			l.error(e.getMessage());
-		}
-		
-	}
-
-	public int ajouterContrat(Contrat contrat) {
-		int testValidator = 0;
-		try {
-			if(contratRepoistory.save(contrat) != null)
+			else
 			{
-				l.info("Saved new contract = " + contrat);
-				testValidator = 1;
-				
+				l.error("the departement does not exist");
 			}
 		} catch (Exception e) {
 			l.error(e.getMessage());
 		}
 		
-		return testValidator;
 	}
 
+	public Contrat getContratByReference(int reference) {
+		return contratRepoistory.findById(reference).get();
+	}
+	
+	public int ajouterContrat(Contrat contrat) {
+		try{
+			if(contratRepoistory.save(contrat) != null)
+			{
+				l.debug("Saved new contract = " + contrat);
+			}
+			}catch (Exception e) {
+				l.error(e.getMessage());
+			}
+	return contrat.getReference();
+	}
+		
 	public void affecterContratAEmploye(int contratId, int employeId) {
 		try {
 			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 			Employe employeManagedEntity = employeRepository.findById(employeId).get();
-
 			contratManagedEntity.setEmploye(employeManagedEntity);
 			if(contratRepoistory.save(contratManagedEntity) != null){
-				l.info("Contract " + contratManagedEntity.getReference() + " affected to employe "+ employeManagedEntity.getNom());
+				l.debug("Contract " + contratManagedEntity.getReference() + " affected to employe "+ employeManagedEntity.getNom());
 			}
 		} catch (Exception e) {
 			l.error(e.getMessage());
@@ -152,18 +160,26 @@ public class EmployeServiceImpl implements IEmployeService {
 		}
 		return testValidator;
 	}
+	
 	public void deleteEmployeById(int employeId)
 	{
 		try{
-			Employe employe = employeRepository.findById(employeId).get();
-			//Desaffecter l'employe de tous les departements
-			//c'est le bout master qui permet de mettre a jour
-			//la table d'association
-			for(Departement dep : employe.getDepartements()){
-				dep.getEmployes().remove(employe);
-				l.info("Employe "+ employe.getNom() + " from the department "+ dep.getName());
+			if(employeRepository.findById(employeId).isPresent())
+			{
+				Employe employe = employeRepository.findById(employeId).get();
+				//Desaffecter l'employe de tous les departements
+				//c'est le bout master qui permet de mettre a jour
+				//la table d'association
+				for(Departement dep : employe.getDepartements()){
+					dep.getEmployes().remove(employe);
+					l.debug("Employe "+ employe.getNom() + " from the department "+ dep.getName());
+				}
+				employeRepository.delete(employe);
 			}
-			employeRepository.delete(employe);
+			else
+			{
+				l.error("no such element");
+			}
 		}catch (Exception e) {
 			l.error(e.getMessage());
 		}
@@ -174,7 +190,7 @@ public class EmployeServiceImpl implements IEmployeService {
 		try {
 			Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
 			contratRepoistory.delete(contratManagedEntity);
-			l.info("Contract "+ contratManagedEntity.getReference() +" deleted");
+			l.debug("Contract "+ contratManagedEntity.getReference() +" deleted");
 		} catch (Exception e) {
 			l.error(e.getMessage());
 		}
@@ -220,7 +236,15 @@ public class EmployeServiceImpl implements IEmployeService {
 
 	@Override
 	public Employe getEmployeById(int id) {
-		return employeRepository.findById(id).get();
+		if(employeRepository.findById(id).isPresent())
+		{
+			return employeRepository.findById(id).get();
+		}
+		else
+		{
+			return null;
+		}
+		
 	}
 
 }
