@@ -113,19 +113,19 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	public int deleteEntrepriseById(int entrepriseId) {
 		logger.info("START deleteEntrepriseById ");
 		try {
-			logger.trace("Début Test : verifier l'exstence du l'entrep");
+			logger.trace("Début Test : verifier l'existence du l'entrep");
 			if (entrepriseRepoistory.findById(entrepriseId).isPresent()) {
 				logger.debug("Entrep exitse:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
 
 				logger.trace("débbut suppression");
 				entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());
 				logger.trace("fin suppression");
-				logger.trace("FIN Test : verifier l'exstence du l'entrep");
+				logger.trace("FIN Test : verifier l'existence du l'entrep");
 				return 1;
 			} else {
 
 				logger.trace("Entrep n'exitse pas");
-				logger.trace("FIN Test : verifier l'exstence du l'entrep");
+				logger.trace("FIN Test : verifier l'existence du l'entrep");
 				return -1;
 			}
 
@@ -134,7 +134,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 		}
 
-		logger.debug("Entrep suprimée:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
+		logger.debug("Entrep supprimée:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
 		logger.info("END deleteEntrepriseById ");
 
 		return 0;
@@ -145,19 +145,19 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	public int deleteDepartementById(int depId) {
 		logger.info("START deleteDepartementById ");
 		try {
-			logger.trace("Début Test : verifier l'exstence du l'entrep");
+			logger.trace("Début Test : verifier l'existence du l'entrep");
 			if (deptRepoistory.findById(depId).isPresent()) {
 				logger.debug("Departement exitse:" + deptRepoistory.findById(depId).get().getId());
 
 				logger.trace("débbut suppression");
 				deptRepoistory.delete(deptRepoistory.findById(depId).get());
 				logger.trace("fin suppression");
-				logger.trace("FIN Test : verifier l'exstence du Departement");
+				logger.trace("FIN Test : verifier l'existence du Departement");
 				return 1;
 			} else {
 
 				logger.trace("Departement n'exitse pas");
-				logger.trace("FIN Test : verifier l'exstence du Departement");
+				logger.trace("FIN Test : verifier l'existence du Departement");
 				return -1;
 			}
 
@@ -173,18 +173,47 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		if (entrepriseRepoistory.findById(entrepriseId).isPresent()) {
-			return entrepriseRepoistory.findById(entrepriseId).get();
+		logger.info("START getEntrepriseById ");
+		try {
+			logger.trace("Début Test : verifier l'existence du l'entrep");
+			if (entrepriseRepoistory.findById(entrepriseId).isPresent()) {
+				
+				logger.debug("Entreprise exitse:" + entrepriseRepoistory.findById(entrepriseId).get().getId());
+				
+				logger.trace("débbut Get");
+				return entrepriseRepoistory.findById(entrepriseId).get();
+			}
+			logger.trace("fin Get");			
+			logger.trace("FIN Test : verifier l'existence du l'entrep");
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
+			
+		}
+		logger.info("END getEntrepriseById ");
 
-		} else
-			return null;
+		return null;
 	}
 
 	public Departement getDepartementById(int departementId) {
-		if (deptRepoistory.findById(departementId).isPresent()) {
-			return deptRepoistory.findById(departementId).get();
-		} else
-			return null;
+		logger.info("START getDepartementById ");
+		try {
+			logger.trace("Début Test : verifier l'existence du departement");
+			if (deptRepoistory.findById(departementId).isPresent()) {
+				
+				logger.debug("Entreprise exitse:" + deptRepoistory.findById(departementId).get().getId());
+				
+				logger.trace("débbut Get");
+				return deptRepoistory.findById(departementId).get();
+			}
+			logger.trace("fin Get");			
+			logger.trace("FIN Test : verifier l'existence du departement");
+		} catch (Exception e) {
+			logger.error("Erreur: " + e);
+			
+		}
+		logger.info("END getDepartementById ");
+
+		return null;
 	}
 
 }
