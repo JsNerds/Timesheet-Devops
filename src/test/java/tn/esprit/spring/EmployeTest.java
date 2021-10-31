@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import tn.esprit.spring.entities.Contrat;
@@ -37,13 +38,15 @@ public class EmployeTest {
 	
 	
 	@Test
+	@Order(1)
 	public void testAjoutEmploye() {
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
 		int id = employeService.ajouterEmploye(employe);
 		Assert.assertNotNull(employeService.getEmployeById(id));
 	}
 	
-	@Test 
+	@Test
+	@Order(2)
 	public void testMettreAjourEmailByEmployeId()
 	{
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
@@ -54,6 +57,7 @@ public class EmployeTest {
 	
 	@Transactional
 	@Test
+	@Order(3)
 	public void testaffecterEmployeADepartement()
 	{
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
@@ -66,6 +70,7 @@ public class EmployeTest {
 	
 	@Transactional
 	@Test
+	@Order(4)
 	public void testdesaffecterEmployeDuDepartemen()
 	{
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
@@ -78,6 +83,7 @@ public class EmployeTest {
 	}
 	
 	@Test
+	@Order(5)
 	public void testAjouterContrat()
 	{
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
@@ -88,6 +94,7 @@ public class EmployeTest {
 	}
 	
 	@Test
+	@Order(6)
 	public void testAffecterContratAEmploye()
 	{
 		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
@@ -101,6 +108,7 @@ public class EmployeTest {
 	}
 	
 	@Test
+	@Order(7)
 	public void testDeleteEmployeById()
 	{
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
