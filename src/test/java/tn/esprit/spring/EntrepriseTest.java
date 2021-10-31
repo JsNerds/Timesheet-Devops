@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
-import tn.esprit.spring.repository.EntrepriseRepository;
 import tn.esprit.spring.services.IEntrepriseService;
 
 @RunWith(SpringRunner.class)
@@ -19,8 +18,6 @@ public class EntrepriseTest {
 	@Autowired
 	private IEntrepriseService serviceEntreprise;
 
-	@Autowired
-	private EntrepriseRepository repoEntreprise;
 
 	@Test
 	public void testAjouterEntreprise() {
@@ -44,14 +41,15 @@ public class EntrepriseTest {
 		Departement dep = new Departement("Web");
 		int idDep = serviceEntreprise.ajouterDepartement(dep);
 
-		Assert.assertNotNull(serviceEntreprise.affecterDepartementAEntreprise(idDep, idEntrep));
+		int idEntrepDep=serviceEntreprise.affecterDepartementAEntreprise(idDep, idEntrep);
+		Assert.assertEquals(idEntrepDep,idEntrep);
 
 	}
 
 	@Test
 	public void testdeleteEntrepriseById() {
 		int value = serviceEntreprise.deleteEntrepriseById(12);
-		Assert.assertEquals(value, 1);
+		Assert.assertEquals(1, value);
 		int WrongValue = serviceEntreprise.deleteEntrepriseById(1812132);
 		Assert.assertEquals(WrongValue, -1);
 
@@ -60,7 +58,7 @@ public class EntrepriseTest {
 	@Test
 	public void testdeleteDepartementById() {
 		int value = serviceEntreprise.deleteDepartementById(6);
-		Assert.assertEquals(value, 1);
+		Assert.assertEquals(1, value);
 		int WrongValue = serviceEntreprise.deleteDepartementById(1812132);
 		Assert.assertEquals(WrongValue, -1);
 
