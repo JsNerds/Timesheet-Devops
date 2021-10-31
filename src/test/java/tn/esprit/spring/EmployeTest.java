@@ -100,4 +100,13 @@ public class EmployeTest {
 		Assert.assertNotNull(employeService.getContratByReference(referenceContrat).getEmploye());
 	}
 	
+	@Test
+	public void testDeleteEmployeById()
+	{
+		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		int idEmploye = employeService.ajouterEmploye(employe);
+		employeService.deleteEmployeById(idEmploye);
+		Assert.assertNull(employeService.getEmployeById(idEmploye));
+	}
+	
 }
