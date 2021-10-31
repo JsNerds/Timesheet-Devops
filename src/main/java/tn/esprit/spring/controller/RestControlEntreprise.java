@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.esprit.spring.entities.Departement;
+import tn.esprit.spring.converter.DepartementConverter;
+import tn.esprit.spring.converter.EntrepriseConverter;
+import tn.esprit.spring.dto.DepartementDto;
+import tn.esprit.spring.dto.EntrepriseDto;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
@@ -33,9 +36,9 @@ public class RestControlEntreprise {
 
 	@PostMapping("/ajouterEntreprise")
 	@ResponseBody
-	public int ajouterEntreprise(@RequestBody Entreprise entreprise) {
-		ientrepriseservice.ajouterEntreprise(entreprise);
-		return entreprise.getId();
+	public int ajouterEntreprise(@RequestBody EntrepriseDto entrepriseDto) {
+		ientrepriseservice.ajouterEntreprise(EntrepriseConverter.dtoToEntity(entrepriseDto));
+		return entrepriseDto.getId();
 	}
 	
 	// http://localhost:8081/SpringMVC/servlet/affecterDepartementAEntreprise/1/1
@@ -63,8 +66,8 @@ public class RestControlEntreprise {
     // http://localhost:8081/SpringMVC/servlet/ajouterDepartement
  	@PostMapping("/ajouterDepartement")
  	@ResponseBody
-	public int ajouterDepartement(@RequestBody Departement dep) {
-		return ientrepriseservice.ajouterDepartement(dep);
+	public int ajouterDepartement(@RequestBody DepartementDto dep) {
+		return ientrepriseservice.ajouterDepartement(DepartementConverter.dtoToEntity(dep));
 	}
 	
  	 // http://localhost:8081/SpringMVC/servlet/getAllDepartementsNamesByEntreprise/1
