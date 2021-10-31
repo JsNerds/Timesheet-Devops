@@ -50,7 +50,7 @@ public class EntrepriseTest {
 
 	@Test
 	public void testdeleteEntrepriseById() {
-		int value = serviceEntreprise.deleteEntrepriseById(20);
+		int value = serviceEntreprise.deleteEntrepriseById(12);
 		Assert.assertEquals(value, 1);
 		int WrongValue = serviceEntreprise.deleteEntrepriseById(1812132);
 		Assert.assertEquals(WrongValue, -1);
@@ -59,11 +59,30 @@ public class EntrepriseTest {
 
 	@Test
 	public void testdeleteDepartementById() {
-		int value = serviceEntreprise.deleteDepartementById(18);
+		int value = serviceEntreprise.deleteDepartementById(6);
 		Assert.assertEquals(value, 1);
 		int WrongValue = serviceEntreprise.deleteDepartementById(1812132);
 		Assert.assertEquals(WrongValue, -1);
 
 	}
+
+	@Test
+	public void testgetEntrepriseById() {
+
+		Entreprise e1 = serviceEntreprise.getEntrepriseById(21);
+		Assert.assertNotNull(e1);
+
+		Entreprise e2 = serviceEntreprise.getEntrepriseById(213232);
+		Assert.assertNull(e2);
+	};
+
+	@Test
+	public void testgetDepartementById() {
+		Departement d1 = serviceEntreprise.getDepartementById(20);
+		Assert.assertNotNull(d1);
+
+		Departement d2 = serviceEntreprise.getDepartementById(213232);
+		Assert.assertNull(d2);
+	};
 
 }
