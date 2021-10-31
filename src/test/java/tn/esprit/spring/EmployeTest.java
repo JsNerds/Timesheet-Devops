@@ -1,8 +1,8 @@
 package tn.esprit.spring;
 
-import static org.junit.Assert.*;
 
-import java.text.SimpleDateFormat;
+
+
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -40,7 +40,7 @@ public class EmployeTest {
 	@Test
 	@Order(1)
 	public void testAjoutEmploye() {
-		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		Employe employe = new Employe("Saidi","ahmed","Ahmed.Saidi@esprit.tn",true,Role.INGENIEUR);
 		int id = employeService.ajouterEmploye(employe);
 		Assert.assertNotNull(employeService.getEmployeById(id));
 	}
@@ -60,12 +60,12 @@ public class EmployeTest {
 	@Order(3)
 	public void testaffecterEmployeADepartement()
 	{
-		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		Employe employe = new Employe("Mneri","Malek","Malek.Mneri@esprit.tn",true,Role.INGENIEUR);
 		int idEmploye = employeService.ajouterEmploye(employe);
 		Departement departement = new Departement("Khalil's Departement");
 		int idDepartement = entrepriseService.ajouterDepartement(departement);
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
-		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe)!= -1);
+		Assert.assertTrue(employeService.getdeptById(idDepartement).getEmployes().indexOf(employe)!= -1);
 	}
 	
 	@Transactional
@@ -73,45 +73,43 @@ public class EmployeTest {
 	@Order(4)
 	public void testdesaffecterEmployeDuDepartemen()
 	{
-		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		Employe employe = new Employe("aziz","sahnoun","sahnoun.aziz@esprit.tn",true,Role.INGENIEUR);
 		int idEmploye = employeService.ajouterEmploye(employe);
 		Departement departement = new Departement("Khalil's Departement");
 		int idDepartement = entrepriseService.ajouterDepartement(departement);
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
 		employeService.desaffecterEmployeDuDepartement(idEmploye, idDepartement);
-		Assert.assertTrue(departementRepository.findById(idDepartement).get().getEmployes().indexOf(employe) == -1);
+		Assert.assertTrue(employeService.getdeptById(idDepartement).getEmployes().indexOf(employe) == -1);
 	}
 	
 	@Test
 	@Order(5)
 	public void testAjouterContrat()
 	{
-		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		Date date = new Date(System.currentTimeMillis());
 		Contrat contrat = new Contrat(date,"CDI",2000);
 		int referenceContrat = employeService.ajouterContrat(contrat);
-		Assert.assertNotNull(employeService.getContratByReference(referenceContrat));
+		Assert.assertNotNull(employeService.getContratById(referenceContrat));
 	}
 	
 	@Test
 	@Order(6)
 	public void testAffecterContratAEmploye()
 	{
-		SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
 		Date date = new Date(System.currentTimeMillis());
 		Contrat contrat = new Contrat(date,"CDI",2000);
 		int referenceContrat = employeService.ajouterContrat(contrat);
-		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		Employe employe = new Employe("Oneil","Shaqil","Shaq.OG@esprit.tn",true,Role.INGENIEUR);
 		int idEmploye = employeService.ajouterEmploye(employe);
 		employeService.affecterContratAEmploye(referenceContrat, idEmploye);
-		Assert.assertNotNull(employeService.getContratByReference(referenceContrat).getEmploye());
+		Assert.assertNotNull(employeService.getContratById(referenceContrat).getEmploye());
 	}
 	
 	@Test
 	@Order(7)
 	public void testDeleteEmployeById()
 	{
-		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
+		Employe employe = new Employe("Jordan","Michael","BlackJesus@esprit.tn",true,Role.INGENIEUR);
 		int idEmploye = employeService.ajouterEmploye(employe);
 		employeService.deleteEmployeById(idEmploye);
 		Assert.assertNull(employeService.getEmployeById(idEmploye));
