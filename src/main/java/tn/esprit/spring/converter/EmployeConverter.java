@@ -10,7 +10,7 @@ public class EmployeConverter {
 	public EmployeDto entityToDto(Employe employe)
 	{
 		return new EmployeDto(employe.getId(),employe.getNom(),
-				employe.getPrenom(),employe.getEmail(),employe.getRole(),employe.isActif());
+				employe.getPrenom(),employe.getEmail(),employe.isActif(),employe.getRole());
 	}
 	
 	public Employe dtoToEntity(EmployeDto employeDto)

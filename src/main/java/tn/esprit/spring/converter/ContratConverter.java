@@ -10,7 +10,7 @@ public class ContratConverter {
 	public ContratDto entityToDto(Contrat contrat)
 	{
 		return new ContratDto(contrat.getReference(),contrat.getDateDebut(),
-				contrat.getSalaire());
+				contrat.getTypeContrat(), contrat.getSalaire());
 	}
 	
 	public Contrat dtoToEntity(ContratDto contratDto)
