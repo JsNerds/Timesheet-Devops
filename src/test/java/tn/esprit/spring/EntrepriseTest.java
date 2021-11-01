@@ -48,8 +48,13 @@ public class EntrepriseTest {
 
 	@Test
 	public void testdeleteEntrepriseById() {
-		int value = serviceEntreprise.deleteEntrepriseById(12);
+		
+		Entreprise ent = new Entreprise("Soc", "DEV");
+		int id = serviceEntreprise.ajouterEntreprise(ent);
+		
+		int value = serviceEntreprise.deleteEntrepriseById(id);
 		Assert.assertEquals(1, value);
+		
 		int WrongValue = serviceEntreprise.deleteEntrepriseById(1812132);
 		Assert.assertEquals(WrongValue, -1);
 
@@ -57,8 +62,12 @@ public class EntrepriseTest {
 
 	@Test
 	public void testdeleteDepartementById() {
-		int value = serviceEntreprise.deleteDepartementById(6);
+		Departement dep = new Departement("Info");
+		int id = serviceEntreprise.ajouterDepartement(dep);
+		
+		int value = serviceEntreprise.deleteDepartementById(id);
 		Assert.assertEquals(1, value);
+		
 		int WrongValue = serviceEntreprise.deleteDepartementById(1812132);
 		Assert.assertEquals(WrongValue, -1);
 
@@ -67,7 +76,10 @@ public class EntrepriseTest {
 	@Test
 	public void testgetEntrepriseById() {
 
-		Entreprise e1 = serviceEntreprise.getEntrepriseById(21);
+		Entreprise ent = new Entreprise("Soc", "DEV");
+		int id = serviceEntreprise.ajouterEntreprise(ent);
+		
+		Entreprise e1 = serviceEntreprise.getEntrepriseById(id);
 		Assert.assertNotNull(e1);
 
 		Entreprise e2 = serviceEntreprise.getEntrepriseById(213232);
@@ -76,7 +88,11 @@ public class EntrepriseTest {
 
 	@Test
 	public void testgetDepartementById() {
-		Departement d1 = serviceEntreprise.getDepartementById(20);
+		Departement dep = new Departement("Info");
+		int id = serviceEntreprise.ajouterDepartement(dep);
+		
+		
+		Departement d1 = serviceEntreprise.getDepartementById(id);
 		Assert.assertNotNull(d1);
 
 		Departement d2 = serviceEntreprise.getDepartementById(213232);
