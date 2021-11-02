@@ -11,10 +11,17 @@ import tn.esprit.spring.entities.TypeContrat;
 @AllArgsConstructor
 public class ContratDto {
 	
-	private String reference;
-	private String salaire;
-	private String DateDebut;
+	private int reference;
+	private float salaire;
+	private Date DateDebut;
 	private String dureecontrat;
-	private TypeContrat type;
+	private String type;
 	
+	public ContratDto(int reference, Date dateDebut, String typeContrat, float salaire) {
+		super();
+		this.reference = reference;
+		this.DateDebut = dateDebut;
+		this.type = typeContrat;
+		this.salaire = salaire;
+	}
 }

@@ -1,102 +1,93 @@
 package tn.esprit.spring.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
-@Entity
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-@Table(name= "Contrat")
+@Entity
 public class Contrat implements Serializable {
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 6191889143079517027L;
+
 	@Id
-	@GeneratedValue (strategy= GenerationType.IDENTITY)
-	private long id_Contrat;
-	private String reference;
-	private String salaire;
-	private String DateDebut;
-	private String dureecontrat;
-	private TypeContrat TypeContrat;
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "Employe", referencedColumnName = "id")
-    private Employe Employe;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int reference;
 	
+	@Temporal(TemporalType.DATE)
+	private Date dateDebut;
 	
+	private String typeContrat;
 	
+	private float salaire;
 	
-	
-	
-	public Contrat(long id_Contrat, String reference, String salaire, String dateDebut, String dureecontrat,
-			tn.esprit.spring.entities.TypeContrat typeContrat, tn.esprit.spring.entities.Employe employe) {
+	@OneToOne
+	private Employe employe;
+
+	public Contrat() {
 		super();
-		this.id_Contrat = id_Contrat;
-		this.reference = reference;
+	}
+	
+	public Contrat(Date dateDebut, String typeContrat, float salaire) {
+		this.dateDebut = dateDebut;
+		this.typeContrat = typeContrat;
 		this.salaire = salaire;
-		DateDebut = dateDebut;
-		this.dureecontrat = dureecontrat;
-		TypeContrat = typeContrat;
-		Employe = employe;
 	}
-	public long getId_Contrat() {
-		return id_Contrat;
+
+
+	public Contrat(int reference, Date dateDebut, String typeContrat, float salaire) {
+		super();
+		this.reference = reference;
+		this.dateDebut = dateDebut;
+		this.typeContrat = typeContrat;
+		this.salaire = salaire;
 	}
-	public void setId_Contrat(long id_Contrat) {
-		this.id_Contrat = id_Contrat;
+
+	public Date getDateDebut() {
+		return dateDebut;
 	}
-	public String getReference() {
+
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	public int getReference() {
 		return reference;
 	}
-	public void setReference(String reference) {
+
+	public void setReference(int reference) {
 		this.reference = reference;
 	}
-	public String getSalaire() {
+
+	public String getTypeContrat() {
+		return typeContrat;
+	}
+
+	public void setTypeContrat(String typeContrat) {
+		this.typeContrat = typeContrat;
+	}
+
+	public float getSalaire() {
 		return salaire;
 	}
-	public void setSalaire(String salaire) {
+
+	public void setSalaire(float salaire) {
 		this.salaire = salaire;
 	}
-	public String getDateDebut() {
-		return DateDebut;
-	}
-	public void setDateDebut(String dateDebut) {
-		DateDebut = dateDebut;
-	}
-	public String getDureecontrat() {
-		return dureecontrat;
-	}
-	public void setDureecontrat(String dureecontrat) {
-		this.dureecontrat = dureecontrat;
-	}
-	public TypeContrat getTypeContrat() {
-		return TypeContrat;
-	}
-	public void TypeContrat(TypeContrat TypeContrat) {
-		this.TypeContrat = TypeContrat;
-	}
-	public Employe getEmploye() {
-		return Employe;
-	}
-	public void setEmploye(Employe employe) {
-		Employe = employe;
-	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	@Override
-	public String toString() {
-		return "Contrat [id_Contrat=" + id_Contrat + ", reference=" + reference + ", salaire=" + salaire
-				+ ", DateDebut=" + DateDebut + ", dureecontrat=" + dureecontrat + ", type=" + TypeContrat + ", Employe="
-				+ Employe + "]";
-	}
-	
-	
-	
 
+	public Employe getEmploye() {
+		return employe;
+	}
+
+	public void setEmploye(Employe employe) {
+		this.employe = employe;
+	}
+	
+	
 }
