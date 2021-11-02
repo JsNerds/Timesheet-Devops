@@ -4,15 +4,17 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import tn.esprit.spring.entities.TypeContrat;
 
 
 @Data
 @AllArgsConstructor
 public class ContratDto {
 	
-	private int reference;
-	private Date dateDebut;
-	private String typeContrat;
-	private float salaire;
+	private String reference;
+	private String salaire;
+	private String DateDebut;
+	private String dureecontrat;
+	private TypeContrat type;
 	
 }
