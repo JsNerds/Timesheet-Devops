@@ -51,6 +51,8 @@ public class ContratTest {
 		int value = ContratService.deleteContrat(idcontrat);
 		Assert.assertEquals(1, value);
 		
+		int WrongValue =  ContratService.deleteContrat(idcontrat);
+		Assert.assertEquals(WrongValue, -1);
 	}
 	
 	@Test

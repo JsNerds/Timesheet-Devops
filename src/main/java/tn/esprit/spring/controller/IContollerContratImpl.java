@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Contrat;
+import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.ContratRepository;;
 @Service
 public class IContollerContratImpl implements ContratService {
@@ -46,8 +47,39 @@ public class IContollerContratImpl implements ContratService {
 	}
 	@Override
 	public int deleteContrat(int id) {
-		ContratRepository.deleteById(id);
-			return 1;
+		l.info("START deleteEntrepriseById ");
+		Optional<Contrat> e = ContratRepository.findById(id);
+
+		try {
+
+			l.trace("Début Test : verifier l'existence du contrat");
+			if (e.isPresent()) {
+				
+				l.debug("contrat exitse:" + e.get().getReference());
+
+				l.trace("débbut suppression");
+				ContratRepository.delete(e.get());
+				l.trace("fin suppression");
+				l.trace("FIN Test");
+				
+				return 1;
+			} else {
+				l.trace("contrat n'exitse pas");
+				l.trace("FIN Test avec fail");
+				return -1;
+			}
+
+		} catch (Exception err) {
+			l.error("err" + err);
+
+		}
+		if(e.isPresent()) {
+			l.debug("Entrep supprimée:" + e.get().getReference());
+		}
+	
+		l.info("END deleteEntrepriseById ");
+
+		return 0;
 	}
 
 	@Override
