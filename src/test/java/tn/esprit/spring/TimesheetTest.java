@@ -66,7 +66,7 @@ public class TimesheetTest {
 
         Mission mission3 = sTimesheet.getMissionById(213232);
         Assert.assertNull(mission3);
-    };
+    }
 
     @Test
     @Order(3)
@@ -81,18 +81,7 @@ public class TimesheetTest {
         Assert.assertEquals(idDepAffecte, idDepartement);
 
     }
-/*
-    @Test
-    @Order(4)
-    public void testAjouterTimesheet() {
-        Mission mission = new Mission("Inspection", "sur terrain");
 
-        Employe employe = new Employe("Saidi", "ahmed", "Ahmed.Saidi@esprit.tn", true, Role.INGENIEUR);
-        Date dateDebut = new Date(System.currentTimeMillis());
-        Date dateFin = new Date(System.currentTimeMillis());
-        sTimesheet.ajouterTimesheet(mission.getId(), employe.getId(), dateDebut, dateFin);
-    }
-*/
     @Test
     @Order(4)
     public void testValiderTimesheet() {
@@ -112,5 +101,19 @@ public class TimesheetTest {
         assertEquals(-1,
                 sTimesheet.validerTimesheet(mission.getId(), ingenieur.getId(), dateDebut, dateFin, ingenieur.getId()));
 
+    }
+    @Test
+    @Order(5)
+    public void testAjouterTimesheet() {
+        Mission mission = new Mission("AjoutTimesheet", "description de ajout Timesheet");
+        Employe employe = new Employe("ajout", "timesheet", "ajoutTimesheet@esprit.tn", true, Role.INGENIEUR);
+        sTimesheet.ajouterMission(mission);
+        sEmploye.ajouterEmploye(employe);
+        Date dateDebut = new Date(System.currentTimeMillis());
+        Date dateFin = new Date(System.currentTimeMillis());
+        Timesheet t = sTimesheet.ajouterTimesheet(mission.getId(), employe.getId(), dateDebut, dateFin);
+
+        assertEquals(mission.getId(),t.getTimesheetPK().getIdMission());
+        assertEquals(employe.getId(),t.getTimesheetPK().getIdEmploye());
     }
 }
