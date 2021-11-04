@@ -99,8 +99,8 @@ public class TimesheetTest {
         Mission mission = new Mission("Inspection", "sur terrain");
         sTimesheet.ajouterMission(mission);
 
-        Employe ingenieur = new Employe("Saidi", "ahmed", "Ahmed.Saidi@esprit.tn", true, Role.INGENIEUR);
-        Employe chef = new Employe("Saidi", "ahmed", "Ahmed.Saidi@esprit.tn", true, Role.CHEF_DEPARTEMENT);
+        Employe ingenieur = new Employe("Piciron", "samir", "ne9es@esprit.tn", true, Role.INGENIEUR);
+        Employe chef = new Employe("bouden", "rabi3", "wiiiiw@esprit.tn", true, Role.CHEF_DEPARTEMENT);
 
         Date dateDebut = new Date(System.currentTimeMillis());
         Date dateFin = new Date(System.currentTimeMillis());
