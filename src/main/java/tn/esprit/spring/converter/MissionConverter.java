@@ -1,8 +1,6 @@
 package tn.esprit.spring.converter;
 
-import tn.esprit.spring.dto.EntrepriseDto;
 import tn.esprit.spring.dto.MissionDto;
-import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
 
 public class MissionConverter {
