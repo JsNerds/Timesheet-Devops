@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import tn.esprit.spring.converter.MissionConverter;
+import tn.esprit.spring.dto.MissionDto;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.services.IEmployeService;
@@ -23,9 +25,9 @@ public class IControllerTimesheetImpl {
 	@Autowired
 	ITimesheetService itimesheetservice;
 
-	public int ajouterMission(Mission mission) {
+	public int ajouterMission(MissionDto mission) {
 		
-		itimesheetservice.ajouterMission(mission);
+		itimesheetservice.ajouterMission(MissionConverter.dtoToEntity(mission));
 		l.info("mission" + mission.getName() +" ajouté");
 		return mission.getId();
 	}

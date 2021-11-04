@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.spring.converter.MissionConverter;
+import tn.esprit.spring.dto.MissionDto;
 import tn.esprit.spring.entities.Employe;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.services.IEmployeService;
@@ -32,8 +34,8 @@ public class RestControlTimesheet {
 	//{"id":4,"name":"mamission", "description":"c ma mission"}
 	@PostMapping("/ajouterMission")
 	@ResponseBody
-	public int ajouterMission(@RequestBody Mission mission) {
-		itimesheetservice.ajouterMission(mission);
+	public int ajouterMission(@RequestBody MissionDto mission) {
+		itimesheetservice.ajouterMission(MissionConverter.dtoToEntity(mission));
 		return mission.getId();
 	}
 
