@@ -47,7 +47,10 @@ public class ContratTest {
 		Date date = new Date(System.currentTimeMillis());
 		Contrat contrat = new Contrat(5, date, "cdi", 800,employe);
 		int idcontrat = ContratService.addContrat(contrat).getReference();
-		Assert.assertNotNull(ContratService.deleteContrat(idcontrat));
+		
+		int value = ContratService.deleteContrat(idcontrat);
+		Assert.assertEquals(1, value);
+		
 	}
 	
 	@Test

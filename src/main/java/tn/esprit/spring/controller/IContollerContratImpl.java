@@ -45,9 +45,9 @@ public class IContollerContratImpl implements ContratService {
         return null;
 	}
 	@Override
-	public boolean deleteContrat(int id) {
+	public int deleteContrat(int id) {
 		ContratRepository.deleteById(id);
-			return true;
+			return 1;
 	}
 
 	@Override
