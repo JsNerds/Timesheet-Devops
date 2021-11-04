@@ -102,6 +102,12 @@ public class Contrat implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	@Override
+	public String toString() {
+		return "Contrat [reference=" + reference + ", dateDebut=" + dateDebut + ", typeContrat=" + typeContrat
+				+ ", salaire=" + salaire + ", employe=" + employe + "]";
+	}
 	
 	
 	
