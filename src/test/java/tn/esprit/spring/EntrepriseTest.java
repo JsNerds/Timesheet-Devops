@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import tn.esprit.spring.entities.Departement;
@@ -20,6 +21,7 @@ public class EntrepriseTest {
 
 
 	@Test
+	@Order(1)
 	public void testAjouterEntreprise() {
 		Entreprise ent = new Entreprise("SaidiJam Mat", "Agriculture");
 		int id = serviceEntreprise.ajouterEntreprise(ent);
