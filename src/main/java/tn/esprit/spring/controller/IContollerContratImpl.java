@@ -11,17 +11,18 @@ import org.springframework.stereotype.Service;
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.repository.ContratRepository;;
+
 @Service
 public class IContollerContratImpl implements ContratService {
 	@Autowired
-	ContratRepository ContratRepository ;
+	ContratRepository ContratRepository;
 	private static final Logger l = LogManager.getLogger(IContollerContratImpl.class);
-	
+
 	@Override
 	public List<Contrat> retrieveAllContrat() {
-		List<Contrat> contrats=(List<Contrat>) ContratRepository.findAll();
-		for(Contrat Contrat: contrats){
-			l.info("contrat list : "+ Contrat);
+		List<Contrat> contrats = (List<Contrat>) ContratRepository.findAll();
+		for (Contrat Contrat : contrats) {
+			l.info("contrat list : " + Contrat);
 		}
 		return contrats;
 	}
@@ -31,20 +32,19 @@ public class IContollerContratImpl implements ContratService {
 		// TODO Auto-generated method stub
 		return ContratRepository.save(u);
 	}
-	
+
 	@Override
-	public Contrat getContratById(int id)
-	{
+	public Contrat getContratById(int id) {
 		Optional<Contrat> contrat = ContratRepository.findById(id);
-        if (contrat.isPresent()) {
-        	if(l.isDebugEnabled())
-        	{
-        		l.debug(String.format("contrat exitse: %d", contrat.get().getReference()));        		
-        	}
-            return contrat.get();
-        }
-        return null;
+		if (contrat.isPresent()) {
+			if (l.isDebugEnabled()) {
+				l.debug(String.format("contrat exitse: %d", contrat.get().getReference()));
+			}
+			return contrat.get();
+		}
+		return null;
 	}
+
 	@Override
 	public int deleteContrat(int id) {
 		l.info("START deleteEntrepriseById ");
@@ -54,14 +54,14 @@ public class IContollerContratImpl implements ContratService {
 
 			l.trace("Début Test : verifier l'existence du contrat");
 			if (e.isPresent()) {
-				
+
 				l.debug("contrat exitse:" + e.get().getReference());
 
 				l.trace("débbut suppression");
 				ContratRepository.delete(e.get());
 				l.trace("fin suppression");
 				l.trace("FIN Test");
-				
+
 				return 1;
 			} else {
 				l.trace("contrat n'exitse pas");
@@ -73,10 +73,10 @@ public class IContollerContratImpl implements ContratService {
 			l.error("err" + err);
 
 		}
-		if(e.isPresent()) {
+		if (e.isPresent()) {
 			l.debug("Entrep supprimée:" + e.get().getReference());
 		}
-	
+
 		l.info("END deleteEntrepriseById ");
 
 		return 0;
@@ -89,8 +89,14 @@ public class IContollerContratImpl implements ContratService {
 
 	@Override
 	public Contrat retrieveContrat(int id) {
+		Optional<Contrat> contrat = ContratRepository.findById(id);
+		if (contrat.isPresent()) {
+			if (l.isDebugEnabled()) {
+				l.debug(String.format("contrat exitse: %d", contrat.get().getReference()));
+			}
+			return contrat.get();
+		}
 		return null;
-
 	}
 
 	public IContollerContratImpl() {
