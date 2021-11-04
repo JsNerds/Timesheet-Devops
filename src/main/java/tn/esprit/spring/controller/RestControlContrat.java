@@ -29,7 +29,7 @@ public List<Contrat> getContrat(){
 
 @GetMapping("/retrieve-contrat/{id}")
 @ResponseBody
-public Contrat getContratById(@PathVariable("id") String id){
+public Contrat getContratById(@PathVariable("id") int id){
 	return ContratService.retrieveContrat(id);
 }
 
@@ -42,7 +42,7 @@ public String addContrat(@RequestBody Contrat u){
 
 @DeleteMapping("/delete-contrat/{id}")
 @ResponseBody
-public void deleteContrat(@PathVariable("id") String id){
+public void deleteContrat(@PathVariable("id") int id){
 	ContratService.deleteContrat(id);
 }
 

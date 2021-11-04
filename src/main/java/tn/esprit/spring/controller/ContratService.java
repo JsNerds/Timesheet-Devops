@@ -7,7 +7,8 @@ import tn.esprit.spring.entities.Contrat;
 public interface ContratService {
 	List<Contrat> retrieveAllContrat();
 	Contrat addContrat(Contrat u);
-	void deleteContrat(String id);
+	boolean deleteContrat(int id);
 	Contrat updateContrat(Contrat u);
-	Contrat retrieveContrat(String id);
+	Contrat retrieveContrat(int id);
+	Contrat getContratById(int id);
 }

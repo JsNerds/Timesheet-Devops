@@ -1,6 +1,7 @@
 package tn.esprit.spring.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +20,7 @@ public class IContollerContratImpl implements ContratService {
 	public List<Contrat> retrieveAllContrat() {
 		List<Contrat> contrats=(List<Contrat>) ContratRepository.findAll();
 		for(Contrat Contrat: contrats){
-			l.info("user list : "+ Contrat);
+			l.info("contrat list : "+ Contrat);
 		}
 		return contrats;
 	}
@@ -29,11 +30,24 @@ public class IContollerContratImpl implements ContratService {
 		// TODO Auto-generated method stub
 		return ContratRepository.save(u);
 	}
-
+	
 	@Override
-	public void deleteContrat(String id) {
-		ContratRepository.deleteById((int) Long.parseLong(id));
-		
+	public Contrat getContratById(int id)
+	{
+		Optional<Contrat> contrat = ContratRepository.findById(id);
+        if (contrat.isPresent()) {
+        	if(l.isDebugEnabled())
+        	{
+        		l.debug(String.format("contrat exitse: %d", contrat.get().getReference()));        		
+        	}
+            return contrat.get();
+        }
+        return null;
+	}
+	@Override
+	public boolean deleteContrat(int id) {
+		ContratRepository.deleteById(id);
+			return true;
 	}
 
 	@Override
@@ -42,7 +56,7 @@ public class IContollerContratImpl implements ContratService {
 	}
 
 	@Override
-	public Contrat retrieveContrat(String id) {
+	public Contrat retrieveContrat(int id) {
 		return null;
 
 	}
