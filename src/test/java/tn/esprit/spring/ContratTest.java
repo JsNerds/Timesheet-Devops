@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ContactServiceImplTest {
+public class ContratTest {
 	
 	@Autowired
 	IContratService cs;
@@ -27,7 +27,7 @@ public class ContactServiceImplTest {
 	@Order(1)
 	public void testRetrieveAllContrats() {
 		List<Contrat> listContrats = cs.retrieveAllContrats();
-		Assert.assertEquals(9, listContrats.size());
+		Assert.assertEquals(4, listContrats.size());
 	}
 	
 	@Test
@@ -53,7 +53,7 @@ public class ContactServiceImplTest {
 
 		Contrat Contratmodifie = new Contrat(testid ,d, "CDD",randomsalaire);
 		cs.updateContrat(Contratmodifie);
-		Assert.assertNotEquals(Contratmodifie.getSalaire(), randomsalaire);
+		Assert.assertNotEquals((int)AncienContrat.getSalaire(), randomsalaire);
 
 	}
 
@@ -71,7 +71,7 @@ public class ContactServiceImplTest {
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date d = dateFormat.parse("2018-03-23");
-		Contrat c = new Contrat(d, "CDI",62);
+		Contrat c = new Contrat(d, "CDI",68);
 		Contrat ContratAdded = cs.addContrat(c);
 		
 		int value = cs.deleteContrat(ContratAdded.getReference());
