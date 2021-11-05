@@ -1,8 +1,6 @@
 package tn.esprit.spring.services;
 import java.util.List;
 
-import java.util.Optional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +25,11 @@ public class ContratServiceImpl implements IContratService {
 			l.info("In retrieveAllContrats() : ");
 			contrats = (List<Contrat>) contratRepository.findAll();  
 			for (Contrat contrat : contrats) {
-				l.debug("contrat: " + contrat);
+				l.debug(contrat);
 			} 
 			l.info("Out of retrieveAllContrats() : ");
 		}catch (Exception e) {
-			l.error("Error in retrieveAllContrats() : " + e);
+			l.error(e);
 		}
 
 		return contrats;
@@ -60,7 +58,7 @@ public class ContratServiceImpl implements IContratService {
 			l.trace("Début Test : verifier l'existence du contrat");
 			if (e != null) {
 
-				l.debug("contrat exitse:" + e.getReference());
+				l.debug(e.getReference());
 
 				l.trace("débbut suppression");
 				contratRepository.delete(e);
@@ -75,7 +73,7 @@ public class ContratServiceImpl implements IContratService {
 			}
 
 		} catch (Exception err) {
-			l.error("err" + err);
+			l.error( err);
 
 		}
 	
@@ -88,7 +86,7 @@ public class ContratServiceImpl implements IContratService {
 	@Override
 	public Contrat retrieveContrat(int id) { 
 		Contrat c =  contratRepository.findById(id).orElse(null);
-		l.info("Contrat returned : " + c);
+		l.info( c);
 		return c; 
 	}
 
