@@ -27,7 +27,11 @@ public class ContratTest {
 	@Order(1)
 	public void testRetrieveAllContrats() {
 		List<Contrat> listContrats = cs.retrieveAllContrats();
-		Assert.assertNotNull(listContrats.size());
+		boolean test = false;
+		if (listContrats.size()>2){
+			test= true;
+		}
+		Assert.assertTrue(test);
 	}
 	
 	@Test
