@@ -25,7 +25,7 @@ import tn.esprit.spring.repository.TimesheetRepository;
 @Service
 public class EmployeServiceImpl implements IEmployeService {
 
-	private static final Logger l = LogManager.getLogger(EmployeServiceImpl.class);
+	private static final Logger logger = LogManager.getLogger(EmployeServiceImpl.class);
 
 	@Autowired
 	EmployeRepository employeRepository;
@@ -35,79 +35,85 @@ public class EmployeServiceImpl implements IEmployeService {
 	ContratRepository contratRepoistory;
 	@Autowired
 	TimesheetRepository timesheetRepository;
+	@Autowired
+	EntrepriseServiceImpl entrepriseService;
 
 	public int ajouterEmploye(Employe employe) {
+		logger.info("Starting add employe service");
 		try {
 			employeRepository.save(employe);
-			if(l.isDebugEnabled())
+			if(logger.isDebugEnabled())
 			{
-			l.debug(String.format("Saved new employe : %s", employe));
+			logger.debug(String.format("Saved new employe : %s", employe));
 			}
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
+		logger.info("The end of add employe service");
 		return employe.getId();
 	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
+		logger.info("Starting update email for employe service");
 		try {
 				Employe employe = getEmployeById(employeId);
-				if(l.isDebugEnabled())
+				if(logger.isDebugEnabled())
 				{
-					l.debug(String.format("Old mail: %s", employe.getEmail()));					
+					logger.debug(String.format("Old mail: %s", employe.getEmail()));					
 				}
 				employe.setEmail(email);
-				if(l.isDebugEnabled())
+				if(logger.isDebugEnabled())
 				{
-					l.debug(String.format("New mail: %s", employe.getEmail()));					
+					logger.debug(String.format("New mail: %s", employe.getEmail()));					
 				}
 					employeRepository.save(employe);
-					l.debug("New mail saved");
+					logger.debug("New mail saved");
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
+		logger.info("The end of update email for employe service");
 	}
 
 	@Transactional
-	public void affecterEmployeADepartement(int employeId, int depId) {
+	public void affecterEmployeADepartement(int employeId, int departementId) {
+		logger.info("Starting of assign employe to department service");
 		try {
-			if (deptRepoistory.findById(depId).isPresent() && employeRepository.findById(employeId).isPresent()) {
-				Departement depManagedEntity = getdeptById(depId);
+				Departement depManagedEntity = entrepriseService.getDepartementById(departementId);
 				Employe employeManagedEntity = getEmployeById(employeId);
 				if (depManagedEntity.getEmployes() == null) {
 					List<Employe> employes = new ArrayList<>();
 					employes.add(employeManagedEntity);
 					depManagedEntity.setEmployes(employes);
-					if(l.isDebugEnabled())
+					if(logger.isDebugEnabled())
 					{
-						l.debug(String.format("The first employe %s has been affected to the department %s",
+						logger.debug(String.format("The first employe %s has been affected to the department %s",
 								employeManagedEntity.getNom(),depManagedEntity.getName()));						
 					}
 				} else {
 					depManagedEntity.getEmployes().add(employeManagedEntity);
-					if(l.isDebugEnabled())
+					if(logger.isDebugEnabled())
 					{
-						l.debug(String.format("Employe %s has been affected to the department %s",
+						logger.debug(String.format("Employe %s has been affected to the department %s",
 								employeManagedEntity.getNom(),depManagedEntity.getName()));						
 					}
 				}
-			}
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
-
+		logger.info("The end of asign employe to department service");
 	}
 
 	@Transactional
-	public void desaffecterEmployeDuDepartement(int employeId, int depId) {
+	public void desaffecterEmployeDuDepartement(int employeId, int departementId) {
+		logger.info("Starting of dismissal of employe from department service");
 		try {
-				Departement dep = getdeptById(depId);
+				Departement dep = entrepriseService.getDepartementById(departementId);
 				int employeNb = dep.getEmployes().size();
 				for (int index = 0; index < employeNb; index++) {
 					if (dep.getEmployes().get(index).getId() == employeId) {
-						if(l.isDebugEnabled())
+						if(logger.isDebugEnabled())
 						{
-							l.debug(String.format("Employe %s kicked from the department %s",
+							logger.debug(String.format("Employe %s kicked from the department %s",
 									dep.getEmployes().get(index).getNom(), dep.getName()));							
 						}
 						dep.getEmployes().remove(index);
@@ -115,51 +121,56 @@ public class EmployeServiceImpl implements IEmployeService {
 					}
 				}
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
-
+		logger.info("The end of dismissal of employe from department service");
 	}
 	public int ajouterContrat(Contrat contrat) {
 		try{
 				contratRepoistory.save(contrat);
-				if(l.isDebugEnabled())
+				if(logger.isDebugEnabled())
 				{
-					l.debug(String.format("Saved new contract = %s" ,contrat.toString()));					
+					logger.debug(String.format("Saved new contract = %s" ,contrat.toString()));					
 				}
 			}catch (Exception e) {
-				l.error(e.getMessage());
+				logger.error(e.getMessage());
 			}
 	return contrat.getReference();
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
+		logger.info("Starting for assign contract to employe service");
 		try {
 				Contrat contratManagedEntity = getContratById(contratId);
 				Employe employeManagedEntity = getEmployeById(employeId);
 				contratManagedEntity.setEmploye(employeManagedEntity);
 				contratRepoistory.save(contratManagedEntity);
-				if(l.isDebugEnabled())
+				if(logger.isDebugEnabled())
 				{
-					l.debug(String.format("Contract %d affected to employe %s", contratManagedEntity.getReference(),
+					logger.debug(String.format("Contract %d affected to employe %s", contratManagedEntity.getReference(),
 							employeManagedEntity.getNom()));
 				}
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
+		logger.info("The end of assign contract to employe service");
 	}
 
 	public String getEmployePrenomById(int employeId) {
+		logger.info("Starting of retrieving the name of employe by id service");
 		String testValidator = "empty";
 		try {
 			Employe employeManagedEntity = getEmployeById(employeId);
 			testValidator = employeManagedEntity.getPrenom();
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
+		logger.info("The end of retieving employe's name by id service");
 		return testValidator;
 	}
 
 	public void deleteEmployeById(int employeId) {
+		logger.info("Starting of delete employe by id service");
 		try {
 				Employe employe = getEmployeById(employeId);
 				// Desaffecter l'employe de tous les departements
@@ -167,59 +178,54 @@ public class EmployeServiceImpl implements IEmployeService {
 				// la table d'association
 				for (Departement dep : employe.getDepartements()) {
 					dep.getEmployes().remove(employe);
-					if(l.isDebugEnabled())
+					if(logger.isDebugEnabled())
 					{
-						l.debug(String.format("Employe %s deleted from the department %s ",employe.getNom() ,dep.getName()));						
+						logger.debug(String.format("Employe %s deleted from the department %s ",employe.getNom() ,dep.getName()));						
 					}
 				}
 				employeRepository.delete(employe);
 
 		} catch (Exception e) {
-			l.error(e.getMessage());
+			logger.error(e.getMessage());
 		}
+		logger.info("The end of delete employe by id service");
 
-	}
-
-	public void deleteContratById(int contratId) {
-		try {
-			Contrat contratManagedEntity = getContratById(contratId);
-			contratRepoistory.delete(contratManagedEntity);
-			if(l.isDebugEnabled())
-			{
-				l.debug(String.format("Contract %d deleted",contratManagedEntity.getReference()));
-			}
-		} catch (Exception e) {
-			l.error(e.getMessage());
-		}
 	}
 
 	public int getNombreEmployeJPQL() {
+		logger.info("Retrieving the number of employes");
 		return employeRepository.countemp();
 	}
 
 	public List<String> getAllEmployeNamesJPQL() {
+		logger.info("Retrieving all employes' names");
 		return employeRepository.employeNames();
 
 	}
 
 	public List<Employe> getAllEmployeByEntreprise(Entreprise entreprise) {
+		logger.info("Retrieving all employes that are assigned to an department in a Company");
 		return employeRepository.getAllEmployeByEntreprisec(entreprise);
 	}
 
 	public void mettreAjourEmailByEmployeIdJPQL(String email, int employeId) {
+		logger.info("Updating employe's email by his/her id");
 		employeRepository.mettreAjourEmailByEmployeIdJPQL(email, employeId);
 
 	}
 
 	public void deleteAllContratJPQL() {
+		logger.info("deleting all contracts");
 		employeRepository.deleteAllContratJPQL();
 	}
 
 	public float getSalaireByEmployeIdJPQL(int employeId) {
+		logger.info("Retrieving Salary by employe's id");
 		return employeRepository.getSalaireByEmployeIdJPQL(employeId);
 	}
 
 	public Double getSalaireMoyenByDepartementId(int departementId) {
+		logger.info("Calculating average salary by department id");
 		return employeRepository.getSalaireMoyenByDepartementId(departementId);
 	}
 
@@ -236,9 +242,9 @@ public class EmployeServiceImpl implements IEmployeService {
 	public Employe getEmployeById(int id) {
 		Optional<Employe> employe = employeRepository.findById(id);
         if (employe.isPresent()) {
-        	if(l.isDebugEnabled())
+        	if(logger.isDebugEnabled())
         	{
-        		l.debug(String.format("Entreprise exitse: %d", employe.get().getId()));        		
+        		logger.debug(String.format("Entreprise exitse: %d", employe.get().getId()));        		
         	}
             return employe.get();
         }
@@ -249,24 +255,11 @@ public class EmployeServiceImpl implements IEmployeService {
 	{
 		Optional<Contrat> contrat = contratRepoistory.findById(id);
         if (contrat.isPresent()) {
-        	if(l.isDebugEnabled())
+        	if(logger.isDebugEnabled())
         	{
-        		l.debug(String.format("contrat exitse: %d", contrat.get().getReference()));        		
+        		logger.debug(String.format("contrat exitse: %d", contrat.get().getReference()));        		
         	}
             return contrat.get();
-        }
-        return null;
-	}
-	
-	public Departement getdeptById(int id)
-	{
-		Optional<Departement> dept = deptRepoistory.findById(id);
-        if (dept.isPresent()) {
-        	if(l.isDebugEnabled())
-        	{
-        		l.debug(String.format("dept exitse: %d", dept.get().getId()));        		
-        	}
-            return dept.get();
         }
         return null;
 	}
