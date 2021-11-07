@@ -38,6 +38,7 @@ public class EmployeTest {
 	
 	
 	@Test
+	@Order(1)
 	public void testAjoutEmploye() {
 		Employe employe = new Employe("Saidi","ahmed","Ahmed.Saidi@esprit.tn",true,Role.INGENIEUR);
 		int id = employeService.ajouterEmploye(employe);
