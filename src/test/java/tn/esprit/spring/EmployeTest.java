@@ -52,7 +52,7 @@ public class EmployeTest {
 		Employe employe = new Employe("Slama","ahmed khalil","Ahmedkhalil.slama@esprit.tn",true,Role.INGENIEUR);
 		int id = employeService.ajouterEmploye(employe);
 		employeService.mettreAjourEmailByEmployeId("olay@esprit.tn", id);
-		Assert.assertTrue("not equal", employeService.getEmployeById(id).getEmail().equals("olay@esprit.tn"));
+		Assert.assertEquals("olay@esprit.tn",employeService.getEmployeById(id).getEmail());
 	}
 	
 	@Transactional
@@ -65,7 +65,7 @@ public class EmployeTest {
 		Departement departement = new Departement("Khalil's Departement");
 		int idDepartement = entrepriseService.ajouterDepartement(departement);
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
-		Assert.assertTrue(employeService.getdeptById(idDepartement).getEmployes().indexOf(employe)!= -1);
+		Assert.assertNotEquals(-1,entrepriseService.getDepartementById(idDepartement).getEmployes().indexOf(employe));
 	}
 	
 	@Transactional
@@ -79,21 +79,11 @@ public class EmployeTest {
 		int idDepartement = entrepriseService.ajouterDepartement(departement);
 		employeService.affecterEmployeADepartement(idEmploye, idDepartement);
 		employeService.desaffecterEmployeDuDepartement(idEmploye, idDepartement);
-		Assert.assertTrue(employeService.getdeptById(idDepartement).getEmployes().indexOf(employe) == -1);
+		Assert.assertEquals(-1,entrepriseService.getDepartementById(idDepartement).getEmployes().indexOf(employe));
 	}
 	
 	@Test
 	@Order(5)
-	public void testAjouterContrat()
-	{
-		Date date = new Date(System.currentTimeMillis());
-		Contrat contrat = new Contrat(date,"CDI",2000);
-		int referenceContrat = employeService.ajouterContrat(contrat);
-		Assert.assertNotNull(employeService.getContratById(referenceContrat));
-	}
-	
-	@Test
-	@Order(6)
 	public void testAffecterContratAEmploye()
 	{
 		Date date = new Date(System.currentTimeMillis());
@@ -103,6 +93,15 @@ public class EmployeTest {
 		int idEmploye = employeService.ajouterEmploye(employe);
 		employeService.affecterContratAEmploye(referenceContrat, idEmploye);
 		Assert.assertNotNull(employeService.getContratById(referenceContrat).getEmploye());
+	}
+	
+	@Test
+	@Order(6)
+	public void testGetEmployePrenomById(){
+		Employe employe = new Employe("bencheikhali","mariem","mariem.bencheikali@esprit.tn",true,Role.INGENIEUR);
+		int idEmploye = employeService.ajouterEmploye(employe);
+		String prenomEmploye = employeService.getEmployePrenomById(idEmploye);
+		Assert.assertEquals("mariem",prenomEmploye);
 	}
 	
 	@Test

@@ -101,13 +101,6 @@ public class RestControlEmploye {
 		iemployeservice.deleteEmployeById(employeId);
 		
 	}
-    
- // URL : http://localhost:8081/SpringMVC/servlet/deleteContratById/2
-    @DeleteMapping("/deleteContratById/{idcontrat}") 
-	@ResponseBody
-	public void deleteContratById(@PathVariable("idcontrat")int contratId) {
-		iemployeservice.deleteContratById(contratId);
-	}
 
     
     // URL : http://localhost:8081/SpringMVC/servlet/getNombreEmployeJPQL
