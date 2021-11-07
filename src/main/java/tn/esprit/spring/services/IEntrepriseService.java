@@ -22,5 +22,18 @@ public interface IEntrepriseService {
 	public Entreprise getEntrepriseById(int entrepriseId);
 
 	public Departement getDepartementById(int departementId);
+	
+	public List<Entreprise> retrieveAllEntreprises();
+	
+	public List<Departement> retrieveAllDepartements(); 
+	
+	public int deleteAllEntreprises();
+	
+	public int deleteAllDepartements(); 
+	
+	public Entreprise updateEntreprise(int entrepId , Entreprise newEntrep);
+
+	public Departement updateDepartement(int depId, Departement newDep);
+	
 
 }

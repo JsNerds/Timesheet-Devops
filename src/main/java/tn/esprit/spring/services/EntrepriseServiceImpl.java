@@ -100,11 +100,10 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 						+ depManagedEntity.getName() + "-" + depManagedEntity.getId());
 				logger.trace("FIN Test : verifier l'existence du l'entreprise et du Departement");
 
+			} else {
+				logger.trace("Entrep ou Dep n'exitse pas");
+				logger.trace("FIN Test : verifier l'existence du l'entreprise et du Departement");
 			}
-		 else {
-			logger.trace("Entrep ou Dep n'exitse pas");
-			logger.trace("FIN Test : verifier l'existence du l'entreprise et du Departement");
-		}
 
 		} catch (Exception e) {
 			logger.error(errorText + e);
@@ -118,12 +117,11 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 		logger.info("START getAllDepartementsNamesByEntreprise ");
 		List<String> depNames = new ArrayList<>();
 		Optional<Entreprise> e = entrepriseRepoistory.findById(entrepriseId);
-	
-		for(String elem: depNames)
-	       {
-			logger.debug("Init List"+elem);
-	       }
-		
+
+		for (String elem : depNames) {
+			logger.debug("Init List" + elem);
+		}
+
 		logger.trace("Début Test : verifier l'existence du l'entrepri");
 
 		if (e.isPresent()) {
@@ -137,20 +135,15 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			}
 			logger.trace("FIN parcour de liste des dep d'entrep");
 
-			
-			for(String elem: depNames)
-		       {
-				logger.debug("Final List"+elem);
-		       }
+			for (String elem : depNames) {
+				logger.debug("Final List" + elem);
+			}
 
 			return depNames;
 		}
-		
+
 		logger.trace("FIN Test : verifier l'existence du l'entrepri");
 
-		
-		
-		
 		logger.info("END getAllDepartementsNamesByEntreprise ");
 
 		return depNames;
@@ -166,14 +159,14 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 			logger.trace("Début Test : verifier l'existence du l'entreprise");
 			if (e.isPresent()) {
-				
+
 				logger.debug("Entrep exitse:" + e.get().getId());
 
 				logger.trace("débbut suppression");
 				entrepriseRepoistory.delete(e.get());
 				logger.trace("fin suppression");
 				logger.trace("FIN Test : verifier l'existence du l'entreprise");
-				
+
 				return 1;
 			} else {
 				logger.trace("Entrep n'exitse pas");
@@ -185,10 +178,10 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			logger.error(errorText + err);
 
 		}
-		if(e.isPresent()) {
+		if (e.isPresent()) {
 			logger.debug("Entrep supprimée:" + e.get().getId());
 		}
-	
+
 		logger.info("END deleteEntrepriseById ");
 
 		return 0;
@@ -219,10 +212,10 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			}
 
 		} catch (Exception e) {
-			logger.error(errorText+ e);
+			logger.error(errorText + e);
 
 		}
-		if(d.isPresent()) {
+		if (d.isPresent()) {
 			logger.debug("Departement suprimée:" + d.get().getId());
 		}
 		logger.info("END deleteDepartementById ");
@@ -237,9 +230,9 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			logger.trace("Début Test : verifier l'existence du l'entrep");
 			if (e.isPresent()) {
 
-				logger.debug("Entreprise exitse:" + e.get().getId());
+				logger.debug("Entreprise exitsee:" + e.get().getId());
 
-				logger.trace("débbut Get");
+				logger.trace("débbut Gett");
 				return e.get();
 			}
 			logger.trace("fin Get");
@@ -269,10 +262,148 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			logger.trace("fin Get");
 			logger.trace("FIN Test : verifier l'existence du departement");
 		} catch (Exception e) {
-			logger.error(errorText+ e);
+			logger.error(errorText + e);
 
 		}
 		logger.info("END getDepartementById ");
+
+		return null;
+	}
+
+	public List<Entreprise> retrieveAllEntreprises() {
+		logger.info("START retrieveAllEntreprises ");
+		List<Entreprise> entreprises = null;
+		try {
+
+			logger.trace("In retrieveAllContrats() : ");
+			entreprises = (List<Entreprise>) entrepriseRepoistory.findAll();
+			for (Entreprise e : entreprises) {
+				logger.debug(e);
+			}
+			logger.trace("Out of retrieveAllContrats() : ");
+		} catch (Exception e) {
+			logger.error(errorText + e);
+		}
+
+		logger.info("END retrieveAllEntreprises ");
+
+		return entreprises;
+	}
+
+	public List<Departement> retrieveAllDepartements() {
+		logger.info("START retrieveAllDepartements ");
+
+		List<Departement> departements = null;
+		try {
+
+			logger.trace("In retrieveAllContrats() : ");
+			departements = (List<Departement>) deptRepoistory.findAll();
+			for (Departement d : departements) {
+				logger.debug(d.getId());
+			}
+			logger.trace("Out of retrieveAllContrats() : ");
+		} catch (Exception e) {
+			logger.error(errorText + e);
+		}
+		logger.info("END retrieveAllDepartements ");
+
+		return departements;
+	}
+
+	public int deleteAllEntreprises() {
+		logger.info("START deleteAllEntreprises ");
+		try {
+			logger.trace("débbut supp");
+			entrepriseRepoistory.deleteAll();
+			logger.trace("fin supp");
+			return 1;
+
+		} catch (Exception e) {
+			logger.error(errorText + e);
+			logger.info("END deleteAllEntreprises ");
+			return 0;
+		}
+
+	}
+
+	public int deleteAllDepartements() {
+		logger.info("START deleteAllDepartements ");
+		try {
+
+			logger.trace("débbut suppres");
+			deptRepoistory.deleteAll();
+			logger.trace("fin suppres");
+
+			return 1;
+
+		} catch (Exception e) {
+			logger.error(errorText + e);
+			logger.info("END deleteAllDepartements ");
+			return 0;
+		}
+	}
+
+	public Entreprise updateEntreprise(int entrepId, Entreprise newEntrep) {
+		logger.info("START updateEntreprise ");
+		Optional<Entreprise> e = entrepriseRepoistory.findById(entrepId);
+		try {
+			logger.trace("Début Test : verifier l'existence du entreprise");
+			if (e.isPresent()) {
+
+				logger.debug("Entreprise exitse:" + e.get().getId());
+
+				logger.trace("débbut Get");
+				Entreprise existitEntrep = e.get();
+				logger.trace("Fin Get");
+
+				logger.trace("debut update");
+				existitEntrep.setName(newEntrep.getName());
+				existitEntrep.setRaisonSocial(newEntrep.getRaisonSocial());
+				logger.trace("fin update");
+
+				logger.info("END updateEntreprise ");
+				return entrepriseRepoistory.save(existitEntrep);
+			} else
+
+				logger.debug("Entreprise n exitse pas");
+			logger.info("END updateEntreprise ");
+
+			return null;
+
+		} catch (Exception err) {
+			logger.error(errorText + err);
+
+			return null;
+		}
+
+	}
+
+	public Departement updateDepartement(int depId, Departement newDep) {
+		logger.info("START updateDepartement ");
+		Optional<Departement> d = deptRepoistory.findById(depId);
+		try {
+			logger.trace("Début Test : verifier l'existence du departement");
+			if (d.isPresent()) {
+
+				logger.debug("Entreprise exitse:" + d.get().getId());
+
+				logger.trace("débbut Get dep");
+				Departement existitDep = d.get();
+				logger.trace("Fin Get dep ");
+				
+				logger.trace("debut update");
+				existitDep.setName(newDep.getName());
+				logger.trace("fin update");
+
+
+				return deptRepoistory.save(existitDep);
+			} else
+				return null;
+
+		} catch (Exception e) {
+			logger.error(errorText + e);
+		}
+		logger.info("END updateDepartement ");
 
 		return null;
 	}
