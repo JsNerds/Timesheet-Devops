@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import tn.esprit.spring.entities.Departement;
@@ -21,6 +22,7 @@ public class EntrepriseTest {
 	private IEntrepriseService serviceEntreprise;
 
 	@Test
+	@Order(1)
 	public void testAjouterEntreprise() {
 		Entreprise ent = new Entreprise("SaidiJam Mat", "Agriculture");
 		int id = serviceEntreprise.ajouterEntreprise(ent);
@@ -28,6 +30,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(2)
 	public void testAjouterDepartment() {
 		Departement dep = new Departement("Agriculture");
 		int id = serviceEntreprise.ajouterDepartement(dep);
@@ -35,6 +38,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(3)
 	public void testaffecterDepartementAEntreprise() {
 		Entreprise ent = new Entreprise("Espritt", "Education");
 		int idEntrep = serviceEntreprise.ajouterEntreprise(ent);
@@ -48,6 +52,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(4)
 	public void testdeleteEntrepriseById() {
 
 		Entreprise ent = new Entreprise("Soc", "DEV");
@@ -62,6 +67,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(5)
 	public void testdeleteDepartementById() {
 		Departement dep = new Departement("Info");
 		int id = serviceEntreprise.ajouterDepartement(dep);
@@ -75,6 +81,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(6)
 	public void testgetEntrepriseById() {
 
 		Entreprise ent = new Entreprise("Soc", "DEV");
@@ -88,6 +95,7 @@ public class EntrepriseTest {
 	};
 
 	@Test
+	@Order(7)
 	public void testgetDepartementById() {
 		Departement dep = new Departement("Info");
 		int id = serviceEntreprise.ajouterDepartement(dep);
@@ -100,6 +108,7 @@ public class EntrepriseTest {
 	};
 
 	@Test
+	@Order(8)
 	public void testretrieveAllEntreprises() {
 
 		boolean test = false;
@@ -119,6 +128,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(9)
 	public void testretrieveAllDepartements() {
 
 		boolean test = false;
@@ -138,6 +148,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(10)
 	public void testupdateDepartement() {
 
 		Departement dep1 = new Departement("DS");
@@ -153,6 +164,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(12)
 	public void testupdateEntreprise() {
 
 		Entreprise ent = new Entreprise("info", "web");
@@ -168,6 +180,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(13)
 	public void testdeleteAllEntreprises() {
 		int value = serviceEntreprise.deleteAllEntreprises();
 		Assert.assertEquals(1, value);
@@ -175,6 +188,7 @@ public class EntrepriseTest {
 	}
 
 	@Test
+	@Order(14)
 	public void testdeleteAllDepartements() {
 		int value = serviceEntreprise.deleteAllDepartements();
 		Assert.assertEquals(1, value);
