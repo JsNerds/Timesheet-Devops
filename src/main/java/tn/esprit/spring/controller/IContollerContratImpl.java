@@ -19,7 +19,7 @@ public class IContollerContratImpl implements ContratService {
 	public List<Contrat> retrieveAllContrat() {
 		List<Contrat> contrats=(List<Contrat>) contratRepository.findAll();
 		for(Contrat Contrat: contrats){
-			l.info(String.format("user list : %s ", Contrat));
+            l.info(Contrat.getSalaire());
 		}
 		return contrats;
 	}
