@@ -254,7 +254,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			logger.trace("Début Test : verifier l'existence du departement");
 			if (d.isPresent()) {
 
-				logger.debug("Entreprise exitse:" + d.get().getId());
+				logger.debug("Entrep exitse:" + d.get().getId());
 
 				logger.trace("débbut Get");
 				return d.get();
