@@ -16,6 +16,7 @@ import tn.esprit.spring.converter.DepartementConverter;
 import tn.esprit.spring.converter.EntrepriseConverter;
 import tn.esprit.spring.dto.DepartementDto;
 import tn.esprit.spring.dto.EntrepriseDto;
+import tn.esprit.spring.entities.Departement;
 import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.services.IEmployeService;
 import tn.esprit.spring.services.IEntrepriseService;
@@ -84,4 +85,31 @@ public class RestControlEntreprise {
 		ientrepriseservice.deleteDepartementById(depId);
 
 	}
+    
+    
+    @GetMapping(value = "getAllEntreprises")
+    @ResponseBody
+	public List<Entreprise> getAllntreprise() {
+		return ientrepriseservice.retrieveAllEntreprises();
+	}
+
+    @GetMapping(value = "getAllDepartements")
+    @ResponseBody
+	public List<Departement> getAllDepartements() {
+		return ientrepriseservice.retrieveAllDepartements();
+	}
+
+    
+    @PutMapping("/updateDepartementId/{iddept}") 
+	@ResponseBody 
+	public Departement updateDepartement(@PathVariable("iddept") int depId, @RequestBody DepartementDto dep) {
+		return ientrepriseservice.updateDepartement(depId, DepartementConverter.dtoToEntity(dep));
+	}
+    
+    @PutMapping("/updateEntreprise/{idEntrep}") 
+	@ResponseBody 
+	public Entreprise updateEntreprise(@PathVariable("idEntrep") int idEntrep, @RequestBody EntrepriseDto entrepriseDto) {
+		return ientrepriseservice.updateEntreprise(idEntrep, EntrepriseConverter.dtoToEntity(entrepriseDto));
+	}
+    
 }
