@@ -19,38 +19,37 @@ import tn.esprit.spring.entities.Contrat;
 @RestController
 public class RestControlContrat {
 @Autowired 
-ContratService ContratService;
+ContratService contratService;
 
 @GetMapping("/retrieve-all-contrat")
 @ResponseBody
 public List<Contrat> getContrat(){
-	List<Contrat> contrat = ContratService.retrieveAllContrat();
-	return contrat;
+	return contratService.retrieveAllContrat();
 }
 
 @GetMapping("/retrieve-contrat/{id}")
 @ResponseBody
 public Contrat getContratById(@PathVariable("id") String id){
-	return ContratService.retrieveContrat(id);
+	return contratService.retrieveContrat(id);
 }
 
 @PostMapping("/add-contrat")
 @ResponseBody
 public String addContrat(@RequestBody ContratDto u){
-	Contrat contrat= ContratService.addContrat(ContratConverter.dtoToEntity(u));
+	Contrat contrat= contratService.addContrat(ContratConverter.dtoToEntity(u));
 	return "this is contrat:"+contrat;
 }
 
 @DeleteMapping("/delete-contrat/{id}")
 @ResponseBody
 public void deleteContrat(@PathVariable("id") String id){
-	ContratService.deleteContrat(id);
+	contratService.deleteContrat(id);
 }
 
 @PutMapping("/update-contrat")
 @ResponseBody
-public Contrat UpdateContrat(@RequestBody  ContratDto u){
-	return ContratService.updateContrat(ContratConverter.dtoToEntity(u));
+public Contrat updateContrat(@RequestBody  ContratDto u){
+	return contratService.updateContrat(ContratConverter.dtoToEntity(u));
 }
 
 

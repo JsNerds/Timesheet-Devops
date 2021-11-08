@@ -13,7 +13,7 @@ public class EmployeConverter {
 				employe.getPrenom(),employe.getEmail(),employe.isActif(),employe.getRole());
 	}
 	
-	public Employe dtoToEntity(EmployeDto employeDto)
+	public static Employe dtoToEntity(EmployeDto employeDto)
 	{
 		return new Employe(employeDto.getNom(),
 				employeDto.getPrenom(),employeDto.getEmail(),employeDto.isActif(),employeDto.getRole());
