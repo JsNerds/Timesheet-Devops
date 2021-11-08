@@ -35,16 +35,15 @@ public class RestControlEmploye {
 	IEntrepriseService ientrepriseservice;
 	@Autowired
 	ITimesheetService itimesheetservice;
-	@Autowired
-	EmployeConverter employeConverter;
+
 	
 	// http://localhost:8081/SpringMVC/servlet/ajouterEmployer	
 	@PostMapping("/ajouterEmployer")
 	@ResponseBody
 	public Employe ajouterEmploye(@RequestBody EmployeDto employeDto)
 	{
-		iemployeservice.ajouterEmploye(employeConverter.dtoToEntity(employeDto));
-		return employeConverter.dtoToEntity(employeDto);
+		iemployeservice.ajouterEmploye(EmployeConverter.dtoToEntity(employeDto));
+		return EmployeConverter.dtoToEntity(employeDto);
 	}
 	
 	// Modifier email : http://localhost:8081/SpringMVC/servlet/modifyEmail/1/newemail
