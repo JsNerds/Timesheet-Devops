@@ -9,9 +9,8 @@ services:
    - MYSQL_USER=aziz
    - MYSQL_PASSWORD=aziz
   ports:
-   - "3307:3307"
-  volumes:
-   - .m2:/root/.m2
+   - "3306:3306"
+
   stdin_open: true
   tty: true
 
@@ -24,7 +23,7 @@ services:
    - mysqldb
   environment:
    SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3307/spring?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/spring?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC",
         "spring.datasource.username" : "aziz",
         "spring.datasource.password" : "aziz",
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
