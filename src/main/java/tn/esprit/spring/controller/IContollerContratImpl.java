@@ -13,7 +13,7 @@ import tn.esprit.spring.services.EntrepriseServiceImpl;
 public class IContollerContratImpl implements ContratService {
 	@Autowired
 	ContratRepository contratRepository;
-	public static final Logger l = Logger.getLogger(EntrepriseServiceImpl.class);
+	public static final Logger l = Logger.getLogger(IContollerContratImpl.class);
 	
 	@Override
 	public List<Contrat> retrieveAllContrat() {
