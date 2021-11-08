@@ -13,7 +13,7 @@ public class ContratConverter {
 				contrat.getTypeContrat(), contrat.getSalaire());
 	}
 	
-	public Contrat dtoToEntity(ContratDto contratDto)
+	public static Contrat dtoToEntity(ContratDto contratDto)
 	{
 		return new Contrat(contratDto.getDateDebut(),contratDto.getType(),contratDto.getSalaire());
 	}

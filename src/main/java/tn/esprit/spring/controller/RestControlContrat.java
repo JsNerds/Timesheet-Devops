@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.spring.converter.ContratConverter;
+import tn.esprit.spring.dto.ContratDto;
 import tn.esprit.spring.entities.Contrat;
 
 @RestController
@@ -35,8 +36,8 @@ public Contrat getContratById(@PathVariable("id") String id){
 
 @PostMapping("/add-contrat")
 @ResponseBody
-public String addContrat(@RequestBody Contrat u){
-	Contrat contrat= ContratService.addContrat(u);
+public String addContrat(@RequestBody ContratDto u){
+	Contrat contrat= ContratService.addContrat(ContratConverter.dtoToEntity(u));
 	return "this is contrat:"+contrat;
 }
 
@@ -48,8 +49,8 @@ public void deleteContrat(@PathVariable("id") String id){
 
 @PutMapping("/update-contrat")
 @ResponseBody
-public Contrat UpdateContrat(@RequestBody Contrat contrat){
-	return ContratService.updateContrat(contrat);
+public Contrat UpdateContrat(@RequestBody  ContratDto u){
+	return ContratService.updateContrat(ContratConverter.dtoToEntity(u));
 }
 
 
