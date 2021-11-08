@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Contrat;
 import tn.esprit.spring.repository.ContratRepository;
-import tn.esprit.spring.services.EntrepriseServiceImpl;
+
 @Service
 public class IContollerContratImpl implements ContratService {
 	@Autowired
