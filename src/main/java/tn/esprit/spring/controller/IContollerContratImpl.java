@@ -8,37 +8,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.spring.entities.Contrat;
-import tn.esprit.spring.repository.ContratRepository;;
+import tn.esprit.spring.repository.ContratRepository;
 @Service
 public class IContollerContratImpl implements ContratService {
 	@Autowired
-	ContratRepository ContratRepository ;
+	ContratRepository contratRepository;
 	private static final Logger l = LogManager.getLogger(IContollerContratImpl.class);
 	
 	@Override
 	public List<Contrat> retrieveAllContrat() {
-		List<Contrat> contrats=(List<Contrat>) ContratRepository.findAll();
+		List<Contrat> contrats=(List<Contrat>) contratRepository.findAll();
 		for(Contrat Contrat: contrats){
-			l.info("user list : "+ Contrat);
+			l.info(String.format("user list : %s ", Contrat));
 		}
 		return contrats;
 	}
 
 	@Override
 	public Contrat addContrat(Contrat u) {
-		// TODO Auto-generated method stub
-		return ContratRepository.save(u);
+		return contratRepository.save(u);
 	}
 
 	@Override
 	public void deleteContrat(String id) {
-		ContratRepository.deleteById((int) Long.parseLong(id));
+		contratRepository.deleteById((int) Long.parseLong(id));
 		
 	}
 
 	@Override
 	public Contrat updateContrat(Contrat u) {
-		return ContratRepository.save(u);
+		return contratRepository.save(u);
 	}
 
 	@Override
@@ -49,6 +48,5 @@ public class IContollerContratImpl implements ContratService {
 
 	public IContollerContratImpl() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 }

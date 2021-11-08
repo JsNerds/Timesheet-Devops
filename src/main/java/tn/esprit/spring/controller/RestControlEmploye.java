@@ -37,8 +37,6 @@ public class RestControlEmploye {
 	ITimesheetService itimesheetservice;
 	@Autowired
 	EmployeConverter employeConverter;
-	@Autowired
-	ContratConverter contratConverter;
 	
 	// http://localhost:8081/SpringMVC/servlet/ajouterEmployer	
 	@PostMapping("/ajouterEmployer")
@@ -75,7 +73,7 @@ public class RestControlEmploye {
 	@PostMapping("/ajouterContrat")
 	@ResponseBody
 	public int ajouterContrat(@RequestBody ContratDto contratDto) {
-		return iemployeservice.ajouterContrat(contratConverter.dtoToEntity(contratDto));
+		return iemployeservice.ajouterContrat(ContratConverter.dtoToEntity(contratDto));
 	}
 	
 	// http://localhost:8081/SpringMVC/servlet/affecterContratAEmploye/6/1
